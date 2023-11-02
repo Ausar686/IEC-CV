@@ -1,21 +1,21 @@
 class BaseType:
-	def __getitem__(self, *args, **kwargs):
-		pass
+    def __getitem__(self, *args, **kwargs):
+        pass
 
 class Session(BaseType):
-	pass
+    pass
 
 class StreamManager(BaseType):
-	pass
+    pass
 
 class Detector(BaseType):
-	pass
+    pass
 
 class VideoReader(BaseType):
-	pass
+    pass
 
 class Logger(BaseType):
-	pass
+    pass
 
-class StreamLogger(BaseType):
-	pass
+class Log(BaseType):
+    pass
