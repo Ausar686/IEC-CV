@@ -34,9 +34,9 @@ class Tracker:
 
     def update_counters(self) -> None:
         # If there is no data to process, simply wait 
-        if self.manager.detect_storage.empty():
-            time.sleep(0.1)
-            return
+        # if self.manager.detect_storage.empty():
+        #     time.sleep(0.1)
+        #     return
 
         # Get bboxes of detected objects
         boxes = self.manager.detect_storage.get()

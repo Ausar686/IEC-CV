@@ -6,6 +6,7 @@ from preprocessor import Preprocessor
 from detector import Detector
 from tracker import Tracker
 from logger import Logger
+from gps import GPS
 
 
 def run_read(manager: StreamManager) -> None:
@@ -43,7 +44,15 @@ def run_log(session: Session) -> None:
     return
 
 
+def run_gps(session: Session) -> None:
+    gps = GPS(session)
+    while True:
+        gps.run()
+    return
+
+
 def run_session(session: Session) -> None:
+    # Initialize processes for session
     processes = {
         manager.camera: {
             "reader": Process(target=run_read, args=(manager,)),
@@ -55,7 +64,11 @@ def run_session(session: Session) -> None:
     processes["logger"] = {
         "log": Process(target=run_log, args=(session,))
     }
+    processes["gps"] = {
+        "gps": Process(target=run_gps, args=(session,))
+    }
+
+    # Start all processes
     for dct in processes.values():
         for process in dct.values():
             process.start()
-    return

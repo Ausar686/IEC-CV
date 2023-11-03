@@ -22,6 +22,7 @@ class Logger:
             log_file.write(data_str)
         return
 
+
     def log(self) -> None:
         for manager in self.session.managers:
             if manager.logs_storage.empty():

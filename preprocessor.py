@@ -23,9 +23,9 @@ class Preprocessor:
 
     def preprocess(self) -> None:
         # If there are no frames to preprocess, simply wait
-        if self.manager.read_storage.empty():
-            time.sleep(0.1)
-            return
+        # if self.manager.read_storage.empty():
+        #     time.sleep(0.1)
+        #     return
 
         # Get the frame for preprocessing
         frame = self.manager.read_storage.get()

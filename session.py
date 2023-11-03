@@ -1,5 +1,7 @@
-from typing import List
+from typing import List, Tuple
 from datetime import datetime
+from multiprocessing import Value
+import time
 
 import torch
 
@@ -25,6 +27,7 @@ class Session:
         min_hits: int=3,
         iou_threshold: float=0.3,
         num_frames_to_average: int=5,
+        patience: float=30,
     ):
         # Check for wrong input
         if weights is None:
@@ -39,6 +42,14 @@ class Session:
 
         # Initialize logging path for this session
         self.event_log_path = self.make_event_log_path()
+
+        # Initialize shared geolocation storages as attributes
+        self.latitude = Value("d", 0)
+        self.longitude = Value("d", 0)
+        self.timestamp = Value("d", 0)
+
+        # Initialize geolocation abscence patience
+        self.patience = patience
 
         # Initialize attribute for stream data storage
         self.stream_tuple = (
@@ -73,6 +84,19 @@ class Session:
         # Make path for file with logs based on session_id
         log_path = f"log_{self.session_id}.json"
         return log_path
+
+
+    @property
+    def geolocation(self) -> Tuple[float]:
+        # Get current timestamnp
+        timestamp = time.time()
+
+        # If previous geolocation update was too far ago, return None
+        if timestamp - self.timestamp.value > self.patience:
+            return None
+
+        # Return stored geolocation otherwise
+        return (self.latitude.value, self.longitude.value)
 
 
     @property

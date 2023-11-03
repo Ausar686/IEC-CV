@@ -26,9 +26,9 @@ class Detector:
 
     def detect(self) -> None:
         # If there are no frames to process, simply wait
-        if self.manager.preprocess_storage.empty():
-            time.sleep(0.1)
-            return
+        # if self.manager.preprocess_storage.empty():
+        #     time.sleep(0.1)
+        #     return
 
         # Get preprocessed frame to perform detection on
         frame = self.manager.preprocess_storage.get()

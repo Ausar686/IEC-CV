@@ -87,6 +87,6 @@ def create_log(manager: StreamManager, event: str, error: Exception=None) -> Log
         session_id=manager.session.session_id,
         event=event,
         error=error,
-        geolocation=None
+        geolocation=manager.session.geolocation
     )
     return log
