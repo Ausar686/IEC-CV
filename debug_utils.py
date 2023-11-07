@@ -1,0 +1,158 @@
+from typing import Callable
+from datetime import datetime
+
+import numpy as np
+
+from iec_mgt_typing import (
+	Session,
+	StreamManager,
+	VideoReader,
+	Preprocessor,
+	Detector,
+	Tracker,
+)
+
+
+def _debug_wrapper(func: Callable) -> Callable:
+	"""
+	This wrapper is used for internal purposes only.
+	It adds supplementary information (current datetitime) to logs about flow
+	and prints the log into standard output (or it's substitution if present).
+	Note, that these logs are used for debug purposes only.
+	They are not necessary for being sent to remote server.
+	"""
+	def wrapper(*args, **kwargs):
+		res = func(*args, **kwargs)
+		now = datetime.now()
+		debug_str = f"[INFO]: {now} {res}"
+		print(debug_str)
+		return res
+	return wrapper
+
+
+def _debug_fail_wrapper(func: Callable) -> Callable:
+	"""
+	This function is an analog for _debug_wrapper but for logging errors.
+	"""
+	def wrapper(*args, **kwargs):
+		res = func(*args, **kwargs)
+		now = datetime.now()
+		debug_str = f"[ERROR]: {now} {res}"
+		print(debug_str)
+		return res
+	return wrapper
+
+
+@_debug_wrapper
+def debug_session_init(session: Session) -> str:
+	return f"Session initialized: ctx={session.ctx}."
+
+
+@_debug_wrapper
+def debug_processes_init(processes: dict) -> str:
+	return f"Processes: {processes}."
+
+
+@_debug_wrapper
+def debug_processes_start(processes: dict) -> str:
+	return f"Session started."
+
+
+@_debug_wrapper
+def debug_processes_finish(processes: dict) -> str:
+	return f"Session finished."
+
+
+@_debug_wrapper
+def debug_manager_init(manager: StreamManager) -> str:
+	return f"Manager for CAM{manager.camera} initialized: stream={manager.reader_tuple}."
+
+
+@_debug_wrapper
+def debug_reader_init(reader: VideoReader) -> str:
+	return f"Reader for CAM{reader.manager.camera} initialized."
+
+
+@_debug_wrapper
+def debug_read_not_empty(reader: VideoReader) -> str:
+	return f"Reader storage for CAM{reader.manager.camera} is not empty. Waiting..."
+
+
+@_debug_wrapper
+def debug_read_frame(reader: VideoReader) -> str:
+	return f"Put frame from CAM{reader.manager.camera}."
+
+
+@_debug_fail_wrapper
+def debug_fail_read_frame(reader: VideoReader, e: Exception) -> str:
+	return f"Failed to put frame from CAM{reader.manager.camera}: {e}"
+
+
+@_debug_wrapper
+def debug_preprocessor_init(preprocessor: Preprocessor) -> str:
+	return f"Preprocessor for CAM{preprocessor.manager.camera} initialized."
+
+
+@_debug_wrapper
+def debug_preprocess_empty(preprocessor: Preprocessor) -> str:
+	return f"Preprocessing storage for CAM{preprocessor.manager.camera} is empty. Waiting..."
+
+
+@_debug_wrapper
+def debug_preprocess_frame(preprocessor: Preprocessor) -> str:
+	return f"Put preprocessed frame from CAM{preprocessor.manager.camera}."
+
+
+@_debug_fail_wrapper
+def debug_fail_preprocess_frame(preprocessor: Preprocessor, e: Exception) -> str:
+	return f"Failed to put preprocessed frame from CAM{preprocessor.manager.camera}: {e}"
+
+
+@_debug_wrapper
+def debug_detector_init(detector: Detector) -> str:
+	return f"Detector for CAM{detector.manager.camera} initialized."
+
+
+@_debug_wrapper
+def debug_detect_empty(detector: Detector) -> str:
+	return f"Detection storage for CAM{detector.manager.camera} is empty. Waiting..."
+
+
+@_debug_wrapper
+def debug_detect_frame(detector: Detector, detections: np.ndarray) -> str:
+	return f"Put {detections.shape[0]} detections from CAM{detector.manager.camera}"
+
+
+@_debug_fail_wrapper
+def debug_fail_detect_frame(detector: Detector, detections: np.ndarray, e: Exception) -> str:
+	return f"Failed to put {detections.shape[0]} detections from CAM{detector.manager.camera}: {e}"
+
+
+@_debug_wrapper
+def debug_tracker_init(tracker: Tracker) -> str:
+	return f"Tracker for CAM{tracker.manager.camera} initialized"
+
+
+@_debug_wrapper
+def debug_track_empty(tracker: Tracker) -> str:
+	return f"Tracking storage for CAM{tracker.manager.camera} is empty. Waiting..."
+
+
+@_debug_wrapper
+def debug_track_enter(tracker: Tracker) -> str:
+	return f"Tracked enter event from CAM{tracker.manager.camera}"
+
+
+@_debug_fail_wrapper
+def debug_fail_track_enter(tracker: Tracker, e: Exception) -> str:
+	return f"Failed to put enter event from CAM{tracker.manager.camera}"
+
+
+@_debug_wrapper
+def debug_track_exit(tracker: Tracker) -> str:
+	return f"Tracked exit event from CAM{tracker.manager.camera}"
+
+
+@_debug_fail_wrapper
+def debug_fail_track_exit(tracker: Tracker, e: Exception) -> str:
+	return f"Failed to put exit event from CAM{tracker.manager.camera}"

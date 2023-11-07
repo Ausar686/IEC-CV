@@ -1,7 +1,7 @@
 import time
 
-import serial
 import pynmea2
+import serial
 
 from iec_mgt_typing import Session
 
@@ -10,6 +10,9 @@ class GPS:
     def __init__(self, session: Session, port: str='/dev/ttyACM0', baud: int=9600):
         # Store reference to session as attribute
         self.session = session
+
+        # Print debug info
+        print(f"[INFO]: GPS initialized")
         
         #########################
         return # Remove this later
@@ -66,9 +69,9 @@ class GPS:
         return
 
 
-    def run(self) -> None:
-        return self.get_location()
+    def run(self, *args, **kwargs) -> None:
+        return self.get_location(*args, **kwargs)
 
 
-    def __call__(self) -> None:
-        return self.get_location()
+    def __call__(self, *args, **kwargs) -> None:
+        return self.get_location(*args, **kwargs)

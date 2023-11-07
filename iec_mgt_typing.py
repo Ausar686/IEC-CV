@@ -8,10 +8,16 @@ class Session(BaseType):
 class StreamManager(BaseType):
     pass
 
+class VideoReader(BaseType):
+    pass
+
+class Preprocessor(BaseType):
+    pass
+
 class Detector(BaseType):
     pass
 
-class VideoReader(BaseType):
+class Tracker(BaseType):
     pass
 
 class Logger(BaseType):

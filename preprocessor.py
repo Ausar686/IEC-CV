@@ -4,6 +4,12 @@ import cv2
 
 from iec_mgt_typing import StreamManager
 from log import Log, create_log
+from debug_utils import (
+    debug_preprocessor_init,
+    debug_preprocess_empty,
+    debug_preprocess_frame,
+    debug_fail_preprocess_frame,
+)
 
 
 class Preprocessor:
@@ -16,16 +22,21 @@ class Preprocessor:
         (width, height) = self.manager.preprocessor_tuple
 
         # Set required attributes
+        self.type = "preprocessor"
         self.width = width
         self.height = height
+
+        # Print debug info
+        debug_preprocessor_init(self)
         return
 
 
     def preprocess(self) -> None:
         # If there are no frames to preprocess, simply wait
-        # if self.manager.read_storage.empty():
-        #     time.sleep(0.1)
-        #     return
+        if self.manager.read_storage.empty():
+            # debug_preprocess_empty(self)
+            time.sleep(0.1)
+            return
 
         # Get the frame for preprocessing
         frame = self.manager.read_storage.get()
@@ -36,7 +47,9 @@ class Preprocessor:
         # Put preprocessed frame into shared storage (or report an issue)
         try:
             self.manager.preprocess_storage.put(frame)
+            debug_preprocess_frame(self)
         except Exception as e:
+            debug_fail_preprocess_frame(self, e)
             log = create_log(self.manager, "preprocessor_put_error", e)
             try:
                 self.manager.logs_storage.put(log)
@@ -45,9 +58,9 @@ class Preprocessor:
         return
 
 
-    def run(self) -> None:
-        return self.preprocess()
+    def run(self, *args, **kwargs) -> None:
+        return self.preprocess(*args, **kwargs)
 
 
-    def __call__(self) -> None:
-        return self.preprocess()
+    def __call__(self, *args, **kwargs) -> None:
+        return self.preprocess(*args, **kwargs)

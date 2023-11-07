@@ -7,8 +7,14 @@ from iec_mgt_typing import Session, Log
 class Logger:
 
     def __init__(self, session: Session):
+        # Store reference to session as an attribute
         self.session = session
+
+        # Initialize required attributes
         self.log_path = self.session.event_log_path
+
+        # Print debug info
+        print(f"[INFO]: Logger initialized")
         return
 
 
@@ -33,9 +39,9 @@ class Logger:
         return
 
 
-    def run(self) -> None:
-        return self.log()
+    def run(self, *args, **kwargs) -> None:
+        return self.log(*args, **kwargs)
 
 
-    def __call__(self) -> None:
-        return self.log()
+    def __call__(self, *args, **kwargs) -> None:
+        return self.log(*args, **kwargs)

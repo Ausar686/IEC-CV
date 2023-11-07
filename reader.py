@@ -1,10 +1,18 @@
 from typing import Iterable
 import time
 
-import av
+# import av
+import cv2
+import numpy as np
 
 from iec_mgt_typing import StreamManager
 from log import Log, create_log
+from debug_utils import (
+    debug_reader_init,
+    debug_read_not_empty,
+    debug_read_frame,
+    debug_fail_read_frame,
+)
 
 
 class VideoReader:
@@ -17,13 +25,20 @@ class VideoReader:
         (stream,) = self.manager.reader_tuple
 
         # Set required attributes
-        self.container = av.open(stream)
-        self.iterator = self.iterator_from_container(self.container)
+        self.type = "reader"
+        # self.container = av.open(stream)
+        # self.iterator = self.iterator_from_container(self.container)
+        self.cap = cv2.VideoCapture(stream)
+
+        # Print debug info
+        debug_reader_init(self)
         return
 
 
     def iterator_from_container(self, container) -> Iterable:
-        # Get a simple Python iterator from av.container to simplify interface
+        """
+        Gets a Python iterator from av.container to simplify interface
+        """
         video_stream = None
         for stream in container.streams:
             if stream.type == 'video':
@@ -38,19 +53,19 @@ class VideoReader:
     def read(self) -> None:
         # If shared storage is not empty, simply wait
         if not self.manager.read_storage.empty():
+            # debug_read_not_empty(self)
             time.sleep(0.1)
             return
 
-        # Read next frame in raw format
-        raw_frame = next(self.iterator).reformat(format="bgr24")
-
-        # Convert frame to np.ndarray
-        frame = raw_frame.to_ndarray()
+        # Get next frame
+        frame = self.get_frame()
 
         # Put the frame into shared storage (or report an issue)
         try:
             self.manager.read_storage.put(frame)
+            debug_read_frame(self)
         except Exception as e:
+            debug_fail_read_frame(self, e)
             log = create_log(self.manager, "reader_put_error", e)
             try:
                 self.manager.logs_storage.put(log)
@@ -59,8 +74,22 @@ class VideoReader:
         return
 
 
+    def get_frame(self) -> np.ndarray:
+        # Read next frame in raw format
+        # raw_frame = next(self.iterator).reformat(format="bgr24")
+
+        # # Convert frame to np.ndarray
+        # frame = raw_frame.to_ndarray()
+
+        # Read frame
+        _, frame = self.cap.read()
+        return frame
+
+
     def close(self) -> None:
-        self.container.close()
+        # Release all reader resources
+        # self.container.close()
+        self.cap.release()
         return
 
 
@@ -68,9 +97,9 @@ class VideoReader:
         return self.close()
 
 
-    def run(self) -> None:
-        return self.read()
+    def run(self, *args, **kwargs) -> None:
+        return self.read(*args, **kwargs)
 
 
-    def __call__(self) -> None:
-        return self.read()
+    def __call__(self, *args, **kwargs) -> None:
+        return self.read(*args, **kwargs)

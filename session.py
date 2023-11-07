@@ -1,11 +1,12 @@
 from typing import List, Tuple
 from datetime import datetime
-from multiprocessing import Value
+import multiprocessing as mp
 import time
 
 import torch
 
 from stream_manager import StreamManager
+from debug_utils import debug_session_init
 
 
 class Session:
@@ -43,15 +44,16 @@ class Session:
         # Initialize logging path for this session
         self.event_log_path = self.make_event_log_path()
 
-        # Initialize shared geolocation storages as attributes
-        self.latitude = Value("d", 0)
-        self.longitude = Value("d", 0)
-        self.timestamp = Value("d", 0)
+        # # Initialize shared geolocation storages as attributes
+        self.ctx = mp.get_context("spawn")
+        self.latitude = self.ctx.Value("d", 0)
+        self.longitude = self.ctx.Value("d", 0)
+        self.timestamp = self.ctx.Value("d", 0)
 
         # Initialize geolocation abscence patience
         self.patience = patience
 
-        # Initialize attribute for stream data storage
+        # # Initialize attribute for stream data storage
         self.stream_tuple = (
             width,
             height,
@@ -67,8 +69,12 @@ class Session:
 
         # Initialize stream managers
         self.managers = [
-            StreamManager(self, stream, camera) for camera, stream in enumerate(streams, 1)
+            StreamManager(self, stream, camera)
+                for camera, stream in enumerate(streams, 1)
         ]
+
+        # Print debug info
+        debug_session_init(self)
         return
 
 
@@ -84,7 +90,7 @@ class Session:
         # Make path for file with logs based on session_id
         log_path = f"log_{self.session_id}.json"
         return log_path
-
+        
 
     @property
     def geolocation(self) -> Tuple[float]:
