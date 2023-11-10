@@ -26,5 +26,5 @@ class Logger(BaseType):
 class Log(BaseType):
     pass
 
-class GPSReceiver(BaseType):
+class GPS(BaseType):
     pass

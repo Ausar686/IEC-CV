@@ -10,6 +10,7 @@ from iec_mgt_typing import (
 	Preprocessor,
 	Detector,
 	Tracker,
+	GPS
 )
 
 
@@ -156,3 +157,8 @@ def debug_track_exit(tracker: Tracker) -> str:
 @_debug_fail_wrapper
 def debug_fail_track_exit(tracker: Tracker, e: Exception) -> str:
 	return f"Failed to put exit event from CAM{tracker.manager.camera}"
+
+
+@_debug_wrapper
+def gps_init(gps: GPS) -> str:
+	return f"GPS initialized."

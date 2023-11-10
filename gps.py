@@ -1,51 +1,35 @@
 import time
 
-import pynmea2
-import serial
+import os
+import gpsd
 
 from iec_mgt_typing import Session
+from debug_utils import debug_gps_init
 
 
 class GPS:
-    def __init__(self, session: Session, port: str='/dev/ttyACM0', baud: int=9600):
+    def __init__(self, session: Session, socket: str='/etc/default/gpsd'):
         # Store reference to session as attribute
         self.session = session
+        self.socket = socket
+
+        # Connect to GPS
+        os.environ["GPSD_SOCKET"] = self.socket
+        gpsd.connect()
 
         # Print debug info
-        print(f"[INFO]: GPS initialized")
-        
-        #########################
-        return # Remove this later
-        #########################
-        self.port = port
-        self.baud = baud
-        self.serialPort = serial.Serial(self.port, baudrate=self.baud, timeout=0.5)
+        debug_gps_init(self)
         return
 
-
-    @staticmethod
-    def _convert_to_decimal(degrees_minutes):
-        """Converts a NMEA GPS value (degrees and minutes) to decimal degrees."""
-        d, m = divmod(float(degrees_minutes), 100)
-        return d + m/60
-
-
     def run_one_iteration(self) -> None:
-        data = self.serialPort.readline()
-        data = data.decode('ascii', errors='ignore').strip()  # Decode using ASCII and ignore invalid characters
-        if 'GGA' in data:
-            msg = pynmea2.parse(data)
-            lat = self._convert_to_decimal(msg.lat)
-            if msg.lat_dir == 'S':
-                lat = -lat
-            lon = self._convert_to_decimal(msg.lon)
-            if msg.lon_dir == 'W':
-                lon = -lon
+        self.packet = gpsd.get_current()
 
+        if self.packet.mode >= 2 and self.packet.lat != 'n/a' and self.packet.lon != 'n/a':
             # Assign values to shared geolocation attributes
-            self.session.latitude.value = lat
-            self.session.longitude.value = lon
+            self.session.latitude.value = self.packet.lat
+            self.session.longitude.value = self.packet.lon
             self.session.timestamp.value = time.time()
+
             return
 
         # Otherwise, raise an exception
@@ -55,13 +39,7 @@ class GPS:
     def get_location(self) -> None:
         while True:
             try:
-                ######REMOVE THIS BLOCK LATER####
-                lat, lon = 55.75, 37.61
-                self.session.latitude.value = lat
-                self.session.longitude.value = lon
-                self.session.timestamp.value = time.time()
-                ##################################
-                # self.run_one_iteration() # Uncomment this later
+                self.run_one_iteration()
                 time.sleep(1)
             except Exception:
                 pass
@@ -75,3 +53,4 @@ class GPS:
 
     def __call__(self, *args, **kwargs) -> None:
         return self.get_location(*args, **kwargs)
+~                                                 
