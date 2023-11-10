@@ -28,3 +28,6 @@ class Log(BaseType):
 
 class GPS(BaseType):
     pass
+
+class Writer(BaseType):
+    pass

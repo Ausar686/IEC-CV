@@ -1,6 +1,8 @@
 from typing import List, Tuple
 from datetime import datetime
 import multiprocessing as mp
+import os
+import sys
 import time
 
 import torch
@@ -87,8 +89,10 @@ class Session:
 
 
     def make_event_log_path(self) -> str:
-        # Make path for file with logs based on session_id
-        log_path = f"log_{self.session_id}.json"
+        # Make path for file with logs based on session_id and sys.path
+        filename = f"log_{self.session_id}.json"
+        directory = sys.path[0]
+        log_path = os.path.join(directory, filename)
         return log_path
         
 

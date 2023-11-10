@@ -35,7 +35,7 @@ class Preprocessor:
         # If there are no frames to preprocess, simply wait
         if self.manager.read_storage.empty():
             # debug_preprocess_empty(self)
-            time.sleep(0.1)
+            time.sleep(0.01)
             return
 
         # Get the frame for preprocessing

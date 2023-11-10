@@ -4,13 +4,14 @@ from datetime import datetime
 import numpy as np
 
 from iec_mgt_typing import (
+	Detector,
+	GPS,
+	Logger,
+	Preprocessor,
 	Session,
 	StreamManager,
-	VideoReader,
-	Preprocessor,
-	Detector,
 	Tracker,
-	GPS
+	VideoReader,
 )
 
 
@@ -160,5 +161,10 @@ def debug_fail_track_exit(tracker: Tracker, e: Exception) -> str:
 
 
 @_debug_wrapper
-def gps_init(gps: GPS) -> str:
+def debug_gps_init(gps: GPS) -> str:
 	return f"GPS initialized."
+
+
+@_debug_wrapper
+def debug_logger_init(logger: Logger) -> str:
+	return "Logger initialized."

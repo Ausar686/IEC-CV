@@ -56,7 +56,7 @@ class Tracker:
         # If there is no data to process, simply wait 
         if self.manager.detect_storage.empty():
             # debug_track_empty(self)
-            time.sleep(0.1)
+            time.sleep(0.01)
             return
 
         # Get bboxes of detected objects

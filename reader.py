@@ -54,7 +54,7 @@ class VideoReader:
         # If shared storage is not empty, simply wait
         if not self.manager.read_storage.empty():
             # debug_read_not_empty(self)
-            time.sleep(0.1)
+            time.sleep(0.01)
             return
 
         # Get next frame

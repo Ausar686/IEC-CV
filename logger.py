@@ -2,6 +2,7 @@ import json
 import time
 
 from iec_mgt_typing import Session, Log
+from debug_utils import debug_logger_init
 
 
 class Logger:
@@ -14,7 +15,7 @@ class Logger:
         self.log_path = self.session.event_log_path
 
         # Print debug info
-        print(f"[INFO]: Logger initialized")
+        debug_logger_init(self)
         return
 
 
@@ -32,7 +33,7 @@ class Logger:
     def log(self) -> None:
         for manager in self.session.managers:
             if manager.logs_storage.empty():
-                time.sleep(0.1)
+                time.sleep(0.01)
                 continue
             log = manager.logs_storage.get()
             self.write_log(log)

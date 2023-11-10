@@ -53,4 +53,3 @@ class GPS:
 
     def __call__(self, *args, **kwargs) -> None:
         return self.get_location(*args, **kwargs)
-~                                                 

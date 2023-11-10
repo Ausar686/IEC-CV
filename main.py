@@ -1,4 +1,5 @@
 import multiprocessing as mp
+import sys
 
 from session import Session
 from utils import run_session
@@ -15,6 +16,9 @@ if __name__ == "__main__":
         "video/self/demo2.mp4",
         "video/self/demo3.mp4"
     ]
+    logs_dir = "/home/gleb/projects/iec_dev/logs"
+    sys.path.append(logs_dir)
+    sys.path = [sys.path[-1], *sys.path[:-1]]
 
     # Initialize and run the session
     session = Session(
