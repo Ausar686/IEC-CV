@@ -1,9 +1,6 @@
 from collections import deque
 import time
 
-from iec_mgt_typing import StreamManager
-from log import Log, create_log
-from sort import Sort
 from debug_utils import (
     debug_tracker_init,
     debug_track_empty,
@@ -12,6 +9,9 @@ from debug_utils import (
     debug_track_enter,
     debug_fail_track_enter,
 )
+from iec_mgt_typing import StreamManager
+from log import Log, create_log
+from sort import Sort
 
 
 class Tracker:

@@ -29,5 +29,5 @@ class Log(BaseType):
 class GPS(BaseType):
     pass
 
-class Writer(BaseType):
+class VideoWriter(BaseType):
     pass

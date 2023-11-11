@@ -1,5 +1,5 @@
-from iec_mgt_typing import Session
 from debug_utils import debug_manager_init
+from iec_mgt_typing import Session
 
 
 class StreamManager:
@@ -28,10 +28,12 @@ class StreamManager:
             max_age,
             min_hits,
             iou_threshold,
-            num_frames_to_average
+            num_frames_to_average,
+            fourcc,
+            fps,
         ) = session.stream_tuple
 
-        # Initialize attributes to store workers data
+        # Initialize attributes to store workers' data
         self.reader_tuple = (stream,)
         self.preprocessor_tuple = (width, height)
         self.detector_tuple = (weights, conf, device)
@@ -42,6 +44,7 @@ class StreamManager:
             iou_threshold,
             num_frames_to_average
         )
+        self.writer_tuple = (fourcc, fps, width, height)
 
         # Initialize counters
         self.count_in = self.session.ctx.Value("I", 0)
@@ -52,6 +55,7 @@ class StreamManager:
         self.preprocess_storage = self.ctx.Queue()
         self.detect_storage = self.ctx.Queue()
         self.logs_storage = self.ctx.Queue()
+        self.write_storage = self.ctx.Queue()
 
         # Print debug info
         debug_manager_init(self)

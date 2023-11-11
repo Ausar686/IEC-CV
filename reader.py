@@ -1,18 +1,18 @@
-from typing import Iterable
 import time
+from typing import Iterable
 
 # import av
 import cv2
 import numpy as np
 
-from iec_mgt_typing import StreamManager
-from log import Log, create_log
 from debug_utils import (
     debug_reader_init,
     debug_read_not_empty,
     debug_read_frame,
     debug_fail_read_frame,
 )
+from iec_mgt_typing import StreamManager
+from log import Log, create_log
 
 
 class VideoReader:
@@ -51,6 +51,18 @@ class VideoReader:
 
 
     def read(self) -> None:
+        """
+        Wrapper around '_read' method, that handles exceptions, 
+        like KeyboardInterrupt.
+        """
+        try:
+            return self._read()
+        except:
+            self.release()
+            raise
+
+
+    def _read(self) -> None:
         # If shared storage is not empty, simply wait
         if not self.manager.read_storage.empty():
             # debug_read_not_empty(self)

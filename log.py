@@ -1,5 +1,5 @@
-from typing import Tuple
 from datetime import datetime
+from typing import Tuple
 
 from iec_mgt_typing import StreamManager
 

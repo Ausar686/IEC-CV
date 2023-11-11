@@ -1,10 +1,10 @@
 import time
-
 import os
+
 import gpsd
 
-from iec_mgt_typing import Session
 from debug_utils import debug_gps_init
+from iec_mgt_typing import Session
 
 
 class GPS:

@@ -2,14 +2,14 @@ import time
 
 import cv2
 
-from iec_mgt_typing import StreamManager
-from log import Log, create_log
 from debug_utils import (
     debug_preprocessor_init,
     debug_preprocess_empty,
     debug_preprocess_frame,
     debug_fail_preprocess_frame,
 )
+from iec_mgt_typing import StreamManager
+from log import Log, create_log
 
 
 class Preprocessor:
@@ -47,6 +47,7 @@ class Preprocessor:
         # Put preprocessed frame into shared storage (or report an issue)
         try:
             self.manager.preprocess_storage.put(frame)
+            self.manager.write_storage.put(frame)
             debug_preprocess_frame(self)
         except Exception as e:
             debug_fail_preprocess_frame(self, e)

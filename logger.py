@@ -1,8 +1,8 @@
 import json
 import time
 
-from iec_mgt_typing import Session, Log
 from debug_utils import debug_logger_init
+from iec_mgt_typing import Session, Log
 
 
 class Logger:

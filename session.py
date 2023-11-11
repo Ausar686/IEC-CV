@@ -1,9 +1,9 @@
-from typing import List, Tuple
 from datetime import datetime
 import multiprocessing as mp
 import os
 import sys
 import time
+from typing import List, Tuple
 
 import torch
 
@@ -31,6 +31,8 @@ class Session:
         iou_threshold: float=0.3,
         num_frames_to_average: int=5,
         patience: float=30,
+        fourcc: str="MP4V",
+        fps: float=30,
     ):
         # Check for wrong input
         if weights is None:
@@ -66,7 +68,9 @@ class Session:
             max_age,
             min_hits,
             iou_threshold,
-            num_frames_to_average
+            num_frames_to_average,
+            fourcc,
+            fps,
         )
 
         # Initialize stream managers
@@ -91,7 +95,7 @@ class Session:
     def make_event_log_path(self) -> str:
         # Make path for file with logs based on session_id and sys.path
         filename = f"log_{self.session_id}.json"
-        directory = sys.path[0]
+        directory = os.environ.get("logs_dir", "/tmp")
         log_path = os.path.join(directory, filename)
         return log_path
         

@@ -1,22 +1,29 @@
 import multiprocessing as mp
 import os
 
-from iec_mgt_typing import StreamManager, Session, Log
-from detector import Detector
-from gps import GPS
-from logger import Logger
-from preprocessor import Preprocessor
-from reader import VideoReader
-from tracker import Tracker
 from debug_utils import (
     debug_processes_init,
     debug_processes_start,
     debug_processes_finish,
 )
+from detector import Detector
+from gps import GPS
+from iec_mgt_typing import StreamManager, Session, Log
+from logger import Logger
+from preprocessor import Preprocessor
+from reader import VideoReader
+from tracker import Tracker
+from writer import VideoWriter
+
+
+def set_environment(**kwargs) -> None:
+    for key, path in kwargs.items():
+        os.makedirs(path, exist_ok=True)
+        os.environ[key] = path
+    return
 
 
 def run_read(manager: StreamManager) -> None:
-    # print(manager.session.ctx)
     reader = VideoReader(manager)
     while True:
         reader.run()
@@ -58,6 +65,13 @@ def run_gps(session: Session) -> None:
     return
 
 
+def run_write(manager: StreamManager) -> None:
+    writer = VideoWriter(manager)
+    while True:
+        writer.run()
+    return
+
+
 def run_session(session: Session) -> None:
     # Make processes for session
     processes = _make_processes(session)
@@ -90,6 +104,10 @@ def _make_processes(session: Session) -> dict:
                 target=run_track,
                 args=(manager,)
             ),
+            "writer": manager.ctx.Process(
+                target=run_write,
+                args=(manager,)
+            ),
         } for manager in session.managers
     }
     processes["logger"] = {
@@ -119,8 +137,16 @@ def _start_processes(processes: dict) -> None:
 
 def _join_processes(processes: dict) -> None:
     # Wait for processes to finish
+    time_max = 100
+    flag = False
     for dct in processes.values():
         for process in dct.values():
             process.join()
+            # if not flag:
+            #     flag = True
+            #     process.join(timeout=time_max)
+            # else:
+            #     process.kill()
+            #     process.join()
     debug_processes_finish(processes)
     return

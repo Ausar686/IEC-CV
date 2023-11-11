@@ -4,14 +4,14 @@ import numpy as np
 import torch
 from ultralytics import YOLO
 
-from iec_mgt_typing import StreamManager
-from log import Log, create_log
 from debug_utils import (
     debug_detector_init,
     debug_detect_empty,
     debug_detect_frame,
     debug_fail_detect_frame,
 )
+from iec_mgt_typing import StreamManager
+from log import Log, create_log
 
 
 class Detector:
