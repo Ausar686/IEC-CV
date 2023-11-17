@@ -1,4 +1,3 @@
-import multiprocessing as mp
 import os
 
 from session import Session
@@ -6,21 +5,26 @@ from utils import run_session, set_environment
 
 if __name__ == "__main__":
 
-    # Initialize session parameters
+    # Initialize paths
     video_dir = "/home/gleb/projects/iec_dev"
-    weights = "/home/gleb/projects/iec_dev/model.pt"
+    weights = "/home/gleb/projects/IEC-CV/model.pt"
+    logs_dir = "/home/gleb/projects/iec_dev/logs"
+    out_video_dir = "/home/gleb/projects/iec_dev/output"
+    stream1 = os.path.join(video_dir, "video/self/demo1.mp4")
+    stream2 = os.path.join(video_dir, "video/self/demo2.mp4")
+    stream3 = os.path.join(video_dir, "video/self/demo3.mp4")
+
+    # INitialize session parameters
     bus_id = "081433"
     route_id = "304A"
     n_cameras = 3
     streams = [
-        os.path.join(video_dir, "video/self/demo1.mp4"),
-        os.path.join(video_dir, "video/self/demo2.mp4"),
-        os.path.join(video_dir, "video/self/demo3.mp4")
+        stream1,        
+        stream2,        
+        stream3,        
     ]
-    logs_dir = "/home/gleb/projects/iec_dev/logs"
-    out_video_dir = "/home/gleb/projects/iec_dev/output"
 
-    # Set PATH variable
+    # Set environment variables
     set_environment(
         logs_dir=logs_dir,
         out_video_dir=out_video_dir,

@@ -1,14 +1,13 @@
 from datetime import datetime
 import multiprocessing as mp
 import os
-import sys
 import time
 from typing import List, Tuple
 
 import torch
 
-from stream_manager import StreamManager
 from debug_utils import debug_session_init
+from stream_manager import StreamManager
 
 
 class Session:
@@ -33,10 +32,11 @@ class Session:
         patience: float=30,
         fourcc: str="MP4V",
         fps: float=30,
+        stop_hour: int=0,
     ):
         # Check for wrong input
         if weights is None:
-            raise ValueError("'weights' keyword argument should be not None.")
+            raise ValueError("Keyword argument 'weights' should be not None.")
         if len(streams) != n_cameras:
             raise ValueError(f"Provided {len(streams)} streams for {n_cameras} cameras.")
 
@@ -45,10 +45,13 @@ class Session:
         self.route_id = route_id
         self.session_id = self.make_session_id()
 
+        # Initialize parameters for time management
+        self.stop_hour = stop_hour
+
         # Initialize logging path for this session
         self.event_log_path = self.make_event_log_path()
 
-        # # Initialize shared geolocation storages as attributes
+        # Initialize shared geolocation storages as attributes
         self.ctx = mp.get_context("spawn")
         self.latitude = self.ctx.Value("d", 0)
         self.longitude = self.ctx.Value("d", 0)
@@ -57,7 +60,7 @@ class Session:
         # Initialize geolocation abscence patience
         self.patience = patience
 
-        # # Initialize attribute for stream data storage
+        # Initialize attribute for stream data storage
         self.stream_tuple = (
             width,
             height,
@@ -93,7 +96,8 @@ class Session:
 
 
     def make_event_log_path(self) -> str:
-        # Make path for file with logs based on session_id and sys.path
+        # Make path for file with logs based on 
+        # session_id and "logs_dir" environment variable.
         filename = f"log_{self.session_id}.json"
         directory = os.environ.get("logs_dir", "/tmp")
         log_path = os.path.join(directory, filename)
@@ -126,3 +130,8 @@ class Session:
     @property
     def count_total(self) -> int:
         return self.count_in - self.count_out
+
+
+    @property
+    def is_over(self) -> bool:
+        return datetime.now().time().hour == self.stop_hour

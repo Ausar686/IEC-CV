@@ -1,5 +1,7 @@
+from datetime import datetime
 import multiprocessing as mp
 import os
+import time
 
 from debug_utils import (
     debug_processes_init,
@@ -73,14 +75,9 @@ def run_write(manager: StreamManager) -> None:
 
 
 def run_session(session: Session) -> None:
-    # Make processes for session
     processes = _make_processes(session)
-
-    # Start processes
     _start_processes(processes)
-
-    # Wait for processes to finish
-    _join_processes(processes)
+    _join_processes(processes, session)
     return
 
 
@@ -135,18 +132,14 @@ def _start_processes(processes: dict) -> None:
     return
 
 
-def _join_processes(processes: dict) -> None:
-    # Wait for processes to finish
-    time_max = 100
-    flag = False
+def _join_processes(processes: dict, session:Session) -> None:
+    # Wait for a session stop hour (sleep to lower CPU usage)
+    while not session.is_over:
+        time.sleep(1)
+    # Kill all the remaining processes and join them
     for dct in processes.values():
         for process in dct.values():
+            process.kill()
             process.join()
-            # if not flag:
-            #     flag = True
-            #     process.join(timeout=time_max)
-            # else:
-            #     process.kill()
-            #     process.join()
     debug_processes_finish(processes)
     return
