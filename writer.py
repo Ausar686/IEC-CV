@@ -50,7 +50,6 @@ class VideoWriter:
         debug_writer_init(self)
         return
 
-
     def create(self) -> None:
         # Get new video path
         self.out_path = self._make_out_path()
@@ -67,7 +66,6 @@ class VideoWriter:
         debug_writer_create(self)
         return
     
-
     def _make_out_path(self) -> str:
         """
         Generates output path, based on current datetime and PATH variable.
@@ -86,7 +84,6 @@ class VideoWriter:
         out_path = os.path.join(directory, filename)
         return out_path
 
-
     def write(self) -> None:
         """
         Writes a frame into specified output path and checks,
@@ -100,7 +97,6 @@ class VideoWriter:
         except:
             self.release()
             raise
-
 
     def write_frame(self) -> None:
         """
@@ -127,7 +123,6 @@ class VideoWriter:
                 pass
         return
 
-
     def _is_valid(self) -> bool:
         """
         Checks, whether the output path is valid.
@@ -136,7 +131,6 @@ class VideoWriter:
         in order to limit the size of a single output video. 
         """
         return self._start_hour == datetime.now().time().hour
-
 
     def restart(self) -> None:
         """
@@ -147,7 +141,6 @@ class VideoWriter:
         self.create()
         return
 
-
     def release(self) -> None:
         """
         Releases the cv2.VideoWriter resources
@@ -157,20 +150,16 @@ class VideoWriter:
         self.writer.release()
         return
 
-
     @property
     def start_hour(self) -> int:
         return self._start_hour
-
 
     @property
     def ext(self) -> str:
         return self._extensions.get(self._fourcc, ".avi")
 
-
     def run(self) -> None:
         return self.write()
-
 
     def __call__(self) -> None:
         return self.write()

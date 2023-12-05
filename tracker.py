@@ -26,7 +26,8 @@ class Tracker:
             max_age,
             min_hits,
             iou_threshold,
-            num_frames_to_average
+            num_frames_to_average,
+            max_tracked_objects,
         ) = self.manager.tracker_tuple
 
         # Initialize tracker
@@ -42,15 +43,15 @@ class Tracker:
         # Initialize worker type
         self.type = "tracker"
 
-        # Initialize storages for tracking
+        # Initialize parameters for tracking
         self.num_frames_to_average = num_frames_to_average
+        self.max_tracked_objects = max_tracked_objects
         self.last_directions = {}
         self.previous_y_coords = {}
 
         # Print debug info
         debug_tracker_init(self)
         return
-
 
     def update_counters(self) -> None:
         # If there is no data to process, simply wait 
@@ -82,9 +83,11 @@ class Tracker:
             avg_y = sum(self.previous_y_coords[obj_id]) / len(self.previous_y_coords[obj_id])
 
             # Update counters
-            self.update_status_by_id(obj_id, cy, avg_y)    
-        return
+            self.update_status_by_id(obj_id, cy, avg_y)
 
+        # Keep storages' size limited
+        self.check_storages()
+        return
 
     def update_status_by_id(self, obj_id: int, cy: float, avg_y: float) -> None:
         # Person is entering the bus 
@@ -96,16 +99,13 @@ class Tracker:
             self.process_exit_event(obj_id)
         return
 
-
     def process_enter_event(self, obj_id: int) -> None:
         # If person has already been moving in (down), do nothing
         if self.last_directions.get(obj_id) == 'down':
             return
-
         # Otherwise increment counter and write logs
         self.manager.count_in.value += 1
         self.last_directions[obj_id] = 'down'
-
         # Put data into a shared storage (or report about issue)
         try:
             log = create_log(self.manager, "enter")
@@ -120,16 +120,13 @@ class Tracker:
                 pass
         return
 
-
     def process_exit_event(self, obj_id: int) -> None:
         # If person has already been moving out (up), do nothing
         if self.last_directions.get(obj_id) == 'up':
             return
-
         # Otherwise increment counter and write logs
         self.manager.count_out.value += 1
         self.last_directions[obj_id] = 'up'
-
         # Put data into a shared storage (or report about issue)
         try:
             log = create_log(self.manager, "exit")
@@ -144,14 +141,22 @@ class Tracker:
                 pass
         return
 
+    def check_storages(self) -> None:
+        extra_coords = len(self.previous_y_coords) - self.max_tracked_objects
+        extra_dirs = len(self.last_directions) - self.max_tracked_objects
+        if extra_coords > 0:
+            for center in list(self.previous_y_coords.keys())[:extra_coords]:
+                self.previous_y_coords.pop(center)
+        if extra_dirs > 0:
+            for obj_id in list(self.last_directions.keys())[:extra_dirs]:
+                self.last_directions.pop(obj_id)
+        return
 
     def track(self, *args, **kwargs) -> None:
         return self.update_counters(*args, **kwargs)
 
-
     def run(self, *args, **kwargs) -> None:
         return self.update_counters(*args, **kwargs)
-
 
     def __call__(self, *args, **kwargs) ->  None:
         return self.update_counters(*args, **kwargs)

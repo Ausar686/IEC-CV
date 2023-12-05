@@ -29,6 +29,7 @@ class StreamManager:
             min_hits,
             iou_threshold,
             num_frames_to_average,
+            max_tracked_objects,
             fourcc,
             fps,
         ) = session.stream_tuple
@@ -42,7 +43,8 @@ class StreamManager:
             max_age,
             min_hits,
             iou_threshold,
-            num_frames_to_average
+            num_frames_to_average,
+            max_tracked_objects,
         )
         self.writer_tuple = (fourcc, fps, width, height)
 

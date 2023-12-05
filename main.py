@@ -3,19 +3,20 @@ import os
 from session import Session
 from utils import run_session, set_environment
 
+
 if __name__ == "__main__":
 
     # Initialize paths
-    video_dir = "/home/gleb/projects/iec_dev"
+    video_dir = "/home/gleb/projects/iec_dev/"
     weights = "/home/gleb/projects/IEC-CV/model.pt"
-    logs_dir = "/home/gleb/projects/iec_dev/logs"
-    out_video_dir = "/home/gleb/projects/iec_dev/output"
+    logs_dir = "/home/gleb/projects/iec_dev/logs/tmp"
+    out_video_dir = "/home/gleb/projects/iec_dev/output/tmp"
     stream1 = os.path.join(video_dir, "video/self/demo1.mp4")
     stream2 = os.path.join(video_dir, "video/self/demo2.mp4")
     stream3 = os.path.join(video_dir, "video/self/demo3.mp4")
 
     # INitialize session parameters
-    bus_id = "081433"
+    bus_id = "081467"
     route_id = "304A"
     n_cameras = 3
     streams = [
