@@ -35,7 +35,6 @@ class GPS:
         # Otherwise, raise an exception
         raise ValueError("No GPS data found")
 
-
     def get_location(self) -> None:
         while True:
             try:
@@ -46,10 +45,8 @@ class GPS:
             time.sleep(0.1)
         return
 
-
     def run(self, *args, **kwargs) -> None:
         return self.get_location(*args, **kwargs)
-
 
     def __call__(self, *args, **kwargs) -> None:
         return self.get_location(*args, **kwargs)

@@ -18,7 +18,6 @@ class Logger:
         debug_logger_init(self)
         return
 
-
     def write_log(self, log: Log) -> None:
         data = log.to_json()
         with open(self.log_path, "a", encoding="utf-8") as log_file:
@@ -29,7 +28,6 @@ class Logger:
             log_file.write(data_str)
         return
 
-
     def log(self) -> None:
         for manager in self.session.managers:
             if manager.logs_storage.empty():
@@ -39,10 +37,8 @@ class Logger:
             self.write_log(log)
         return
 
-
     def run(self, *args, **kwargs) -> None:
         return self.log(*args, **kwargs)
-
 
     def __call__(self, *args, **kwargs) -> None:
         return self.log(*args, **kwargs)

@@ -33,7 +33,6 @@ class Detector:
         debug_detector_init(self)
         return
 
-
     def detect(self) -> None:
         # If there are no frames to process, simply wait
         if self.manager.preprocess_storage.empty():
@@ -43,7 +42,6 @@ class Detector:
 
         # Get preprocessed frame to perform detection on
         frame = self.manager.preprocess_storage.get()
-
         detections = self.get_detections(frame)
 
         # Put data into a shared storage (or report about issue)
@@ -58,7 +56,6 @@ class Detector:
             except Exception:
                 pass
         return
-
 
     def get_detections(self, frame: np.ndarray) -> np.ndarray:
         # Perform detection
@@ -82,14 +79,11 @@ class Detector:
             break
         return detections
 
-
     def process(self, *args, **kwargs) -> None:
         return self.detect(*args, **kwargs)
 
-
     def run(self, *args, **kwargs) -> None:
         return self.detect(*args, **kwargs)
-
 
     def __call__(self, *args, **kwargs) -> None:
         return self.detect(*args, **kwargs)

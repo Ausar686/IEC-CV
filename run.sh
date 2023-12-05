@@ -13,11 +13,18 @@
 # or only a part, that contains conda. It's totally up to you.
 CONDA_PATH_PREFIX="/home/gleb/miniconda3/envs/torch/bin:/home/gleb/miniconda3/condabin"
 
-# Set the prefix to the actual PATH variable
+# Set the prefix to the actual PATH variable.
 PATH="$CONDA_PATH_PREFIX:$PATH"
 
-# Set abspath to script
+# Set abspath to script.
 SCRIPT_ABSPATH="/home/gleb/projects/IEC-CV/main.py"
 
-# Now run the script using Python3 and abspath to script
-python3 $SCRIPT_ABSPATH
+# Set abspath to output log file.
+# Vary the path according to the current date in format YYYY-MM-DD.
+OUTPUT_FILENAME=$(date +"%Y-%m-%d")
+OUTPUT_DIR="/home/gleb/projects/iec_dev/logs/console/"
+OUTPUT_EXT=".log"
+OUTPUT_ABSPATH="${OUTPUT_DIR}${OUTPUT_FILENAME}${OUTPUT_EXT}"
+
+# Now run the script using Python3 and abspath to script.
+python3 $SCRIPT_ABSPATH > $OUTPUT_ABSPATH

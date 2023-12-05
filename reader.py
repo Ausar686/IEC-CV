@@ -1,8 +1,7 @@
 import time
 from typing import Iterable
 
-# import av
-import cv2
+import av
 import numpy as np
 
 from debug_utils import (
@@ -26,14 +25,12 @@ class VideoReader:
 
         # Set required attributes
         self.type = "reader"
-        # self.container = av.open(stream)
-        # self.iterator = self.iterator_from_container(self.container)
-        self.cap = cv2.VideoCapture(stream)
+        self.container = av.open(stream)
+        self.iterator = self.iterator_from_container(self.container)
 
         # Print debug info
         debug_reader_init(self)
         return
-
 
     def iterator_from_container(self, container) -> Iterable:
         """
@@ -49,7 +46,6 @@ class VideoReader:
         iterator = iter(container.decode(video=video_stream.index))
         return iterator
 
-
     def read(self) -> None:
         """
         Wrapper around '_read' method, that handles exceptions, 
@@ -60,7 +56,6 @@ class VideoReader:
         except:
             self.release()
             raise
-
 
     def _read(self) -> None:
         # If shared storage is not empty, simply wait
@@ -85,33 +80,24 @@ class VideoReader:
                 pass
         return
 
-
     def get_frame(self) -> np.ndarray:
         # Read next frame in raw format
-        # raw_frame = next(self.iterator).reformat(format="bgr24")
+        raw_frame = next(self.iterator).reformat(format="bgr24")
 
-        # # Convert frame to np.ndarray
-        # frame = raw_frame.to_ndarray()
-
-        # Read frame
-        _, frame = self.cap.read()
+        # Convert frame to np.ndarray
+        frame = raw_frame.to_ndarray()
         return frame
-
 
     def close(self) -> None:
         # Release all reader resources
-        # self.container.close()
-        self.cap.release()
+        self.container.close()
         return
-
 
     def release(self) -> None:
         return self.close()
 
-
     def run(self, *args, **kwargs) -> None:
         return self.read(*args, **kwargs)
-
 
     def __call__(self, *args, **kwargs) -> None:
         return self.read(*args, **kwargs)

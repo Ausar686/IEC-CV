@@ -34,31 +34,25 @@ class Log:
             self.geolocation = geolocation
         return
 
-
     @property
     def total_seconds(self) -> float:
         return (self.timestamp - self.start_date).total_seconds()
-
 
     @property
     def date(self) -> str:
         return str(self.timestamp.date())
 
-
     @property
     def time(self) -> str:
         return str(self.timestamp.time())
-
 
     @property
     def latitude(self) -> float|None:
         return self.geolocation[0]
 
-
     @property
     def longitude(self) -> float|None:
         return self.geolocation[1]
-
 
     def to_json(self) -> dict:
         data = {
