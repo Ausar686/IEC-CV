@@ -157,15 +157,15 @@ def associate_detections_to_trackers(detections,trackers,iou_threshold = 0.3):
 
   Returns 3 lists of matches, unmatched_detections and unmatched_trackers
   """
-  print(f"DETECTIONS: {detections}")
-  print(f"TRACKERS: {trackers}")
+  # print(f"DETECTIONS: {detections}")
+  # print(f"TRACKERS: {trackers}")
   if(len(trackers)==0):
     return np.empty((0,2),dtype=int), np.arange(len(detections)), np.empty((0,5),dtype=int)
 
   iou_matrix = iou_batch(detections, trackers)
 
-  print(f"IOU MATRIX: {iou_matrix}")
-  print(f"IOU MATRIX SHAPE: {iou_matrix.shape}")
+  # print(f"IOU MATRIX: {iou_matrix}")
+  # print(f"IOU MATRIX SHAPE: {iou_matrix.shape}")
 
   if min(iou_matrix.shape) > 0:
     a = (iou_matrix > iou_threshold).astype(np.int32)
@@ -176,7 +176,7 @@ def associate_detections_to_trackers(detections,trackers,iou_threshold = 0.3):
   else:
     matched_indices = np.empty(shape=(0,2))
 
-  print(f"MATCHED INDICES: {matched_indices}")
+  # print(f"MATCHED INDICES: {matched_indices}")
 
   unmatched_detections = []
   for d, det in enumerate(detections):
@@ -238,9 +238,9 @@ class Sort(object):
       self.trackers.pop(t)
     matched, unmatched_dets, unmatched_trks = associate_detections_to_trackers(dets,trks, self.iou_threshold)
 
-    print(f"MATCHED: {matched}")
-    print(f"UNMATCHED DETS: {unmatched_dets}")
-    print(f"UNMATCHED TRKS: {unmatched_trks}")
+    # print(f"MATCHED: {matched}")
+    # print(f"UNMATCHED DETS: {unmatched_dets}")
+    # print(f"UNMATCHED TRKS: {unmatched_trks}")
 
     # update matched trackers with assigned detections
     for m in matched:
@@ -253,15 +253,15 @@ class Sort(object):
     i = len(self.trackers)
     for trk in reversed(self.trackers):
         d = trk.get_state()[0]
-        print(f"STATE: {d}")
+        # print(f"STATE: {d}")
         # if (trk.time_since_update < 1) and (trk.hit_streak >= self.min_hits or self.frame_count <= self.min_hits):
         cond = True#np.all(d > -100) and np.all(d < 640)
         if cond:
           ret.append(np.concatenate((d,[trk.id+1])).reshape(1,-1)) # +1 as MOT benchmark requires positive
         i -= 1
         # remove dead tracklet
-        # if(trk.time_since_update > self.max_age):
-        if (trk.time_since_update > self.max_age) or not cond:
+        if(trk.time_since_update > self.max_age):
+        # if (trk.time_since_update > self.max_age) or not cond:
           self.trackers.pop(i)
     if(len(ret)>0):
       return np.concatenate(ret)
