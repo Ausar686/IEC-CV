@@ -1,0 +1,26 @@
+[INFO]: 2023-11-07 16:42:37.022354 Preprocessor for CAM3 initialized.
+[INFO]: 2023-11-07 16:42:36.884814 Preprocessor for CAM1 initialized.
+[INFO]: 2023-11-07 16:42:36.897771 Preprocessor for CAM2 initialized.
+[INFO]: GPS initialized
+[INFO]: Logger initialized
+[INFO]: 2023-11-07 16:42:36.875845 Tracker for CAM1 initialized
+[INFO]: 2023-11-07 16:42:37.275522 Tracker for CAM3 initialized
+[INFO]: 2023-11-07 16:42:36.901758 Tracker for CAM2 initialized
+[INFO]: 2023-11-07 16:42:37.020361 Detector for CAM1 initialized.
+[INFO]: 2023-11-07 16:42:37.029331 Detector for CAM2 initialized.
+[INFO]: 2023-11-07 16:42:37.120027 Detector for CAM3 initialized.
+[INFO]: 2023-11-07 16:42:37.659178 Reader for CAM3 initialized.
+[INFO]: 2023-11-07 16:42:37.660178 Put frame from CAM3.
+[INFO]: 2023-11-07 16:42:37.761834 Put frame from CAM3.
+[INFO]: 2023-11-07 16:42:37.683097 Reader for CAM1 initialized.
+[INFO]: 2023-11-07 16:42:37.684094 Put frame from CAM1.
+[INFO]: 2023-11-07 16:42:37.793727 Put frame from CAM1.
+[INFO]: 2023-11-07 16:42:37.683097 Reader for CAM2 initialized.
+[INFO]: 2023-11-07 16:42:37.684094 Put frame from CAM2.
+[INFO]: 2023-11-07 16:42:37.793727 Put frame from CAM2.
+[INFO]: 2023-11-07 16:42:30.576842 Manager for CAM1 initialized: stream=('video/self/demo1.mp4',).
+[INFO]: 2023-11-07 16:42:30.576842 Manager for CAM2 initialized: stream=('video/self/demo2.mp4',).
+[INFO]: 2023-11-07 16:42:30.577839 Manager for CAM3 initialized: stream=('video/self/demo3.mp4',).
+[INFO]: 2023-11-07 16:42:30.577839 Session initialized: ctx=<multiprocessing.context.SpawnContext object at 0x000001DBB0C02A40>.
+[INFO]: 2023-11-07 16:42:30.577839 Processes: {1: {'reader': <SpawnProcess name='SpawnProcess-1' parent=6496 initial>, 'preprocessor': <SpawnProcess name='SpawnProcess-2' parent=6496 initial>, 'detector': <SpawnProcess name='SpawnProcess-3' parent=6496 initial>, 'tracker': <SpawnProcess name='SpawnProcess-4' parent=6496 initial>}, 2: {'reader': <SpawnProcess name='SpawnProcess-5' parent=6496 initial>, 'preprocessor': <SpawnProcess name='SpawnProcess-6' parent=6496 initial>, 'detector': <SpawnProcess name='SpawnProcess-7' parent=6496 initial>, 'tracker': <SpawnProcess name='SpawnProcess-8' parent=6496 initial>}, 3: {'reader': <SpawnProcess name='SpawnProcess-9' parent=6496 initial>, 'preprocessor': <SpawnProcess name='SpawnProcess-10' parent=6496 initial>, 'detector': <SpawnProcess name='SpawnProcess-11' parent=6496 initial>, 'tracker': <SpawnProcess name='SpawnProcess-12' parent=6496 initial>}, 'logger': {'log': <SpawnProcess name='SpawnProcess-13' parent=6496 initial>}, 'gps': {'gps': <SpawnProcess name='SpawnProcess-14' parent=6496 initial>}}.
+[INFO]: 2023-11-07 16:42:31.513622 Session started.
