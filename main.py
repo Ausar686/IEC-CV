@@ -1,8 +1,8 @@
+from collections import defaultdict
 import math
 import os
 import time
 from typing import Tuple
-from collections import defaultdict
 
 import cv2
 import numpy as np
@@ -25,15 +25,16 @@ def main(**kwargs) -> Tuple[int, int]:
     video_shape = (width, height)
     line_height = kwargs.pop("line_height", 200)
     detect_conf = kwargs.pop("detect_conf", 0.3)
-    detect_iou = kwargs.pop("detect_iou", 0.1)
+    detect_iou = kwargs.pop("detect_iou", 0.01)
     tracker_max_age = kwargs.pop("tracker_max_age", 120)
     tracker_min_hits = kwargs.pop("tracker_min_hits", 1)
-    tracker_iou = kwargs.pop("tracker_iou", 0.1)
+    tracker_iou = kwargs.pop("tracker_iou", 0.02)
     fourcc_str = kwargs.pop("fourcc_str", "XVID")
     fps = kwargs.pop("fps", 30)
     max_bbox_sides_relation = kwargs.pop("max_bbox_sides_relation", 2)
     min_frames_to_count = kwargs.pop("min_frames_to_count", 500)
     min_detection_square = kwargs.pop("min_detection_square", 0)
+    display_frames = kwargs.pop("display_frames", False)
 
     # Check if parameters are valid
     if not stream:
@@ -90,6 +91,8 @@ def main(**kwargs) -> Tuple[int, int]:
         detections = np.empty((0, 5))
 
         for r in results:
+            tmp = r.boxes.xyxy.cpu().numpy()
+            print(tmp[np.where((tmp[:, 2]-tmp[:, 0])*(tmp[:, 3]-tmp[:, 1]) > 20000 & tmp[:, 2] > 300)])
             boxes = r.boxes
             for box in boxes:
                 x1, y1, x2, y2 = box.xyxy[0]
@@ -183,11 +186,12 @@ def main(**kwargs) -> Tuple[int, int]:
         cv2.putText(img, f'People In: {count_down}', (20, 80), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 255, 0), 2)
         cv2.putText(img, f'People Out: {count_up}', (20, 110), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 0, 255), 2)
 
-        cv2.imshow("Image", img)
-        k = cv2.waitKey(1)
-        if k == ord("q"):
-            time.sleep(1)
-            break
+        if display_frames:
+            cv2.imshow("Image", img)
+            k = cv2.waitKey(1)
+            if k == ord("q"):
+                time.sleep(1)
+                break
         if writer:
             writer.write(img)
 
@@ -196,27 +200,23 @@ def main(**kwargs) -> Tuple[int, int]:
     cap.release()
     if writer:
         writer.release()
-    return (count_down, count_down)
+    return (count_down, count_up)
 
 
 if __name__ == "__main__":
     # Parameters' definitions
-    test_dir = "test_set"
-    # stream = "remote_copy/video_2023-11-25_hour20_cam1.mp4"
-    # stream = "remote_copy/video_2023-11-25_hour20_cam2.mp4"
-    # stream = "remote_copy/video_2023-11-25_hour20_cam3.mp4"
-    stream = "test_set/video9.mp4"
-    # stream = "video/self/demo1.mp4"
+    stream = "testing_video/test_set1/9.mp4"
     weights = "models/model_2023-12-19s.pt"
+    # weights = "models/model_2023-12-19s_openvino_model"
     # output_path = make_output_path()
     # output_path = None
     output_path = f"output_video.mp4"
     width = 640
     height = 640
-    line_height = 200
-    detect_conf = 0.5
+    line_height = 160
+    detect_conf = 0.55
     detect_iou = 0.01
-    tracker_max_age = 120
+    tracker_max_age = 30
     tracker_min_hits = 1
     tracker_iou = 0.02#0.05
     fourcc_str = "XVID"
@@ -224,9 +224,7 @@ if __name__ == "__main__":
     max_bbox_sides_relation = 2
     min_frames_to_count = 500
     min_detection_square = 0#10000
-    # for filename in os.listdir(test_dir):
-    #     stream = os.path.join(test_dir, filename)
-    #     output_path = f"output_video{stream[-5]}.mp4"
+    display_frames = True
 
     kwargs = {
         "stream": stream,
@@ -244,7 +242,8 @@ if __name__ == "__main__":
         "fps": fps,
         "max_bbox_sides_relation": max_bbox_sides_relation,
         "min_frames_to_count": min_frames_to_count,
-        "min_detection_square": min_detection_square
+        "min_detection_square": min_detection_square,
+        "display_frames": display_frames,
     }
 
     main(**kwargs)
