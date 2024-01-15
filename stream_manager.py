@@ -24,11 +24,15 @@ class StreamManager:
             device,
             weights,
             conf,
+            detect_iou,
+            min_detection_square,
+            max_bbox_sides_relation,
             line_height,
             max_age,
             min_hits,
-            iou_threshold,
+            tracker_iou,
             num_frames_to_average,
+            min_frames_to_count,
             max_tracked_objects,
             fourcc,
             fps,
@@ -37,13 +41,21 @@ class StreamManager:
         # Initialize attributes to store workers' data
         self.reader_tuple = (stream,)
         self.preprocessor_tuple = (width, height)
-        self.detector_tuple = (weights, conf, device)
+        self.detector_tuple = (
+            weights,
+            conf,
+            detect_iou,
+            device,
+            min_detection_square,
+            max_bbox_sides_relation
+        )
         self.tracker_tuple = (
             line_height,
             max_age,
             min_hits,
-            iou_threshold,
+            tracker_iou,
             num_frames_to_average,
+            min_frames_to_count,
             max_tracked_objects,
         )
         self.writer_tuple = (fourcc, fps, width, height)

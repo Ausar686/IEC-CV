@@ -21,13 +21,23 @@ class Detector:
         self.manager = manager
 
         # Unpack parameters
-        (weights, conf, device) = self.manager.detector_tuple
+        (
+            weights,
+            conf,
+            detect_iou,
+            device,
+            min_detection_square,
+            max_bbox_sides_relation,
+        ) = self.manager.detector_tuple
 
         # Set required attributes
         self.type = "detector"
         self.model = YOLO(weights)
         self.conf = conf
         self.device = device
+        self.iou = detect_iou
+        self.min_square = min_detection_square
+        self.max_sides_relation = max_bbox_sides_relation
 
         # Print debug info
         debug_detector_init(self)
@@ -64,7 +74,8 @@ class Detector:
                 frame,
                 conf=self.conf,
                 device=self.device,
-                verbose=False
+                iou=self.iou,
+                verbose=False,
             )
 
         # Initialize storage for detections
@@ -73,8 +84,16 @@ class Detector:
         # Results is a generator, so we iterate among it's elements
         # Note: DO NOT pass several images to Detector at once
         for r in results:
-            # Convert to numpy array of integers
+            # Convert to numpy array of floats
             xyxy = r.boxes.xyxy.cpu().numpy()
+            w = xyxy[:, 2] - xyxy[:, 0]
+            h = xyxy[:, 3] - xyxy[:, 1]
+            # Keep only big enough detections with 'square-like' forms
+            cond1 = w * h > self.min_square
+            cond2 = w / h < self.max_sides_relation
+            cond3 = h / w < self.max_sides_relation
+            cond = cond1 * cond2 * cond3
+            xyxy = xyxy[cond]
             detections = np.vstack((detections, xyxy))
             break
         return detections
