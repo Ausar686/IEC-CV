@@ -122,8 +122,8 @@ def debug_detect_empty(detector: Detector) -> str:
 
 
 @_debug_wrapper
-def debug_detect_frame(detector: Detector, detections: np.ndarray) -> str:
-    return f"Put {detections.shape[0]} detections from CAM{detector.manager.camera}"
+def debug_detect_frame(detector: Detector, detections: np.ndarray, door: int) -> str:
+    return f"Put {detections.shape[0]} detections and door state {door} from CAM{detector.manager.camera}"
 
 
 @_debug_fail_wrapper

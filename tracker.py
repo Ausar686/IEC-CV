@@ -22,6 +22,8 @@ class Tracker:
 
         # Unpack parameters
         (
+            width,
+            height,
             line_height,
             max_age,
             min_hits,
@@ -37,9 +39,19 @@ class Tracker:
             min_hits=min_hits,
             iou_threshold=tracker_iou
         )
+
+        # Initialize frame parameters
+        self.width = width
+        self.height = height
         
         # Initialize line coordinates
+        self.delta_y = self.height // 20
+        self.delta_x = self.width // 6
         self.line_height = line_height
+        self.line_height_low = self.line_height - self.delta_y
+        self.line_height_high = self.line_height + self.delta_y
+        self.x_min = self.delta_x
+        self.x_max = self.width - self.delta_x
 
         # Initialize worker type
         self.type = "tracker"
@@ -49,6 +61,8 @@ class Tracker:
         self.max_tracked_objects = max_tracked_objects
         self.last_direction = {}
         self.previous_y = {}
+        self.previous_low_y = {}
+        self.previous_high_y = {}
         self.frame_counter = 0
         self.min_frames_to_count = min_frames_to_count
 
@@ -69,6 +83,9 @@ class Tracker:
         # Get bboxes of detected objects
         boxes = self.manager.detect_storage.get()
 
+        # Get door state
+        door = self.manager.door_storage.get()
+
         # Update Sort tracker
         tracker_data = self.tracker.update(boxes)
 
@@ -76,26 +93,48 @@ class Tracker:
         for elem in tracker_data:
             # Get y-coordinate of a bbox center
             x1, y1, x2, y2, obj_id = elem
+            cx = (x1 + x2) // 2
             cy = (y1 + y2) // 2
 
             # Check object dynamics
-            if obj_id in self.previous_y:
-                # Calculate the average y-coordinate among recent frames
-                avg_y = sum(self.previous_y[obj_id]) / len(self.previous_y[obj_id])
-
+            if obj_id in self.previous_y and door:
                 # Update counters
-                self.update_status_by_id(obj_id, cy, avg_y)
-            else:
+                self.update_status_by_id(obj_id, cx, cy, y1, y2)
+            elif obj_id not in self.previous_y:
                 self.previous_y[obj_id] = deque(
                     maxlen=self.num_frames_to_average
                 )
+                self.previous_low_y[obj_id] = deque(
+                    maxlen=self.num_frames_to_average
+                )
+                self.previous_high_y[obj_id] = deque(
+                    maxlen=self.num_frames_to_average
+                )
             self.previous_y[obj_id].append(cy)
+            self.previous_low_y[obj_id].append(y2)
+            self.previous_high_y[obj_id].append(y1)
 
         # Keep storages' size limited
         self.check_storages()
         return
 
-    def update_status_by_id(self, obj_id: int, cy: float, avg_y: float) -> None:
+    def update_status_by_id(
+        self,
+        obj_id: int,
+        cx: float,
+        cy: float,
+        y1: float,
+        y2: float
+    ) -> None:
+        # Check if the person's x-coordinate is inside the area
+        if not (self.x_min <= cx <= self.x_max):
+            return
+
+        # Calculate the average y-coordinate among recent frames
+        avg_y = sum(self.previous_y[obj_id]) / len(self.previous_y[obj_id])
+        avg_low_y = sum(self.previous_low_y[obj_id]) / len(self.previous_low_y[obj_id])
+        avg_high_y = sum(self.previous_high_y[obj_id]) / len(self.previous_high_y[obj_id])
+
         # Person is entering the bus 
         if avg_y < self.line_height and cy > self.line_height:
             self.process_enter_event(obj_id)
@@ -103,6 +142,15 @@ class Tracker:
         # Person is exiting the bus
         elif avg_y > self.line_height and cy < self.line_height:
             self.process_exit_event(obj_id)
+
+        # Person has been standing next to the door and is exiting now
+        elif avg_low_y > self.line_height_low and y2 < self.line_height_low:
+            self.process_exit_event(obj_id)
+
+        # Person has entered too fast, and detector failed
+        # to recognize him quickly
+        elif avg_high_y < self.line_height_high and y1 > self.line_height_high:
+            self.process_enter_event(obj_id)
         return
 
     def process_enter_event(self, obj_id: int) -> None:
@@ -165,6 +213,8 @@ class Tracker:
         if extra_coords > 0:
             for center in list(self.previous_y.keys())[:extra_coords]:
                 self.previous_y.pop(center)
+                self.previous_low_y.pop(center)
+                self.previous_high_y.pop(center)
         if extra_dirs > 0:
             for obj_id in list(self.last_direction.keys())[:extra_dirs]:
                 self.last_direction.pop(obj_id)

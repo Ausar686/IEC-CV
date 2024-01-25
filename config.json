@@ -1,0 +1,33 @@
+{
+	"bus_id": "081467",
+	"route_id": "304A",
+	"n_cameras": 3,
+	"streams": [
+		"C:/Users/gleby/Documents/projects/iec/mgt/yolo/testing_video/test_set1/0.mp4",
+		"C:/Users/gleby/Documents/projects/iec/mgt/yolo/testing_video/test_set1/1.mp4",
+		"C:/Users/gleby/Documents/projects/iec/mgt/yolo/testing_video/test_set1/2.mp4"
+	],
+	"width": 640,
+	"height": 640,
+	"detect_weights": "detect_model.pt",
+	"dtect_conf": 0.55,
+	"detect_iou": 0.01,
+	"detect_half": true,
+	"min_detection_square": 0,
+	"line_height": 130,
+	"tracker_max_age": 60,
+	"tracker_min_hits": 1,
+	"tracker_iou": 0.02,
+	"num_frames_to_average": 5,
+	"min_frames_to_count": 500,
+	"max_tracked_objects": 100,
+	"patience": 30,
+	"fourcc": "MP4V",
+	"fps": 30,
+	"stop_hour": 0,
+	"cls_weights": "cls_model.pt",
+	"cls_threshold": 0.25,
+	"cls_half": true,
+	"cls_mode": "torch",
+	"cls_shape": [224, 224]
+}
