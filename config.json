@@ -3,9 +3,9 @@
 	"route_id": "304A",
 	"n_cameras": 3,
 	"streams": [
-		"C:/Users/gleby/Documents/projects/iec/mgt/yolo/testing_video/test_set1/0.mp4",
-		"C:/Users/gleby/Documents/projects/iec/mgt/yolo/testing_video/test_set1/1.mp4",
-		"C:/Users/gleby/Documents/projects/iec/mgt/yolo/testing_video/test_set1/2.mp4"
+		"/home/gleb/projects/iec_test/video/video0.mp4",
+		"/home/gleb/projects/iec_test/video/video0.mp4",
+		"/home/gleb/projects/iec_test/video/video0.mp4"
 	],
 	"width": 640,
 	"height": 640,

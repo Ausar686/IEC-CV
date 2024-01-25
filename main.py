@@ -13,8 +13,8 @@ if __name__ == "__main__":
     # Read config file
     with open(config_path, "r", encoding="utf-8") as config:
         kwargs = json.load(config)
-    logs_dir = kwargs.pop("logs_dir", os.environ["TEMP"])
-    out_video_dir = kwargs.pop("out_video_dir", os.environ["TEMP"])
+    logs_dir = kwargs.pop("logs_dir", ".")
+    out_video_dir = kwargs.pop("out_video_dir", ".")
 
     # Set environment variables
     set_environment(
