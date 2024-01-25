@@ -126,7 +126,8 @@ class Detector:
                 torch.from_numpy(image)
                 .permute((2, 0, 1))
                 .unsqueeze(0)
-                .cuda()
+                .type(torch.float16)
+                .cuda()/255
             )
         # Run classification on image
         res = self.cls_model(image, verbose=False, half=self.cls_half)

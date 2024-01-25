@@ -1,0 +1,840 @@
+{
+    "timestamp": 1706195356.642449,
+    "date": "2024-01-25",
+    "time": "15:09:16.642449",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195356.89932,
+    "date": "2024-01-25",
+    "time": "15:09:16.899320",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195356.905023,
+    "date": "2024-01-25",
+    "time": "15:09:16.905023",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195356.947969,
+    "date": "2024-01-25",
+    "time": "15:09:16.947969",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195357.606689,
+    "date": "2024-01-25",
+    "time": "15:09:17.606689",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195357.600912,
+    "date": "2024-01-25",
+    "time": "15:09:17.600912",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195387.127268,
+    "date": "2024-01-25",
+    "time": "15:09:47.127268",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195387.495019,
+    "date": "2024-01-25",
+    "time": "15:09:47.495019",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195387.949081,
+    "date": "2024-01-25",
+    "time": "15:09:47.949081",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195390.645246,
+    "date": "2024-01-25",
+    "time": "15:09:50.645246",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195390.688288,
+    "date": "2024-01-25",
+    "time": "15:09:50.688288",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195392.199166,
+    "date": "2024-01-25",
+    "time": "15:09:52.199166",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195393.110565,
+    "date": "2024-01-25",
+    "time": "15:09:53.110565",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195394.139348,
+    "date": "2024-01-25",
+    "time": "15:09:54.139348",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195394.514908,
+    "date": "2024-01-25",
+    "time": "15:09:54.514908",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195395.353452,
+    "date": "2024-01-25",
+    "time": "15:09:55.353452",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195395.751409,
+    "date": "2024-01-25",
+    "time": "15:09:55.751409",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195397.154909,
+    "date": "2024-01-25",
+    "time": "15:09:57.154909",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195398.33264,
+    "date": "2024-01-25",
+    "time": "15:09:58.332640",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195399.386269,
+    "date": "2024-01-25",
+    "time": "15:09:59.386269",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195742.132601,
+    "date": "2024-01-25",
+    "time": "15:15:42.132601",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195742.355152,
+    "date": "2024-01-25",
+    "time": "15:15:42.355152",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195742.429703,
+    "date": "2024-01-25",
+    "time": "15:15:42.429703",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195742.96746,
+    "date": "2024-01-25",
+    "time": "15:15:42.967460",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195743.326237,
+    "date": "2024-01-25",
+    "time": "15:15:43.326237",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195743.455706,
+    "date": "2024-01-25",
+    "time": "15:15:43.455706",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195744.642514,
+    "date": "2024-01-25",
+    "time": "15:15:44.642514",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195745.263313,
+    "date": "2024-01-25",
+    "time": "15:15:45.263313",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195745.879459,
+    "date": "2024-01-25",
+    "time": "15:15:45.879459",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195746.631536,
+    "date": "2024-01-25",
+    "time": "15:15:46.631536",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195747.035621,
+    "date": "2024-01-25",
+    "time": "15:15:47.035621",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195747.635494,
+    "date": "2024-01-25",
+    "time": "15:15:47.635494",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195750.037141,
+    "date": "2024-01-25",
+    "time": "15:15:50.037141",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195750.029465,
+    "date": "2024-01-25",
+    "time": "15:15:50.029465",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195750.623387,
+    "date": "2024-01-25",
+    "time": "15:15:50.623387",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195752.895563,
+    "date": "2024-01-25",
+    "time": "15:15:52.895563",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195752.963357,
+    "date": "2024-01-25",
+    "time": "15:15:52.963357",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195753.219311,
+    "date": "2024-01-25",
+    "time": "15:15:53.219311",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195832.137492,
+    "date": "2024-01-25",
+    "time": "15:17:12.137492",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195832.589886,
+    "date": "2024-01-25",
+    "time": "15:17:12.589886",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195832.967759,
+    "date": "2024-01-25",
+    "time": "15:17:12.967759",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195833.067788,
+    "date": "2024-01-25",
+    "time": "15:17:13.067788",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195834.231573,
+    "date": "2024-01-25",
+    "time": "15:17:14.231573",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195834.331532,
+    "date": "2024-01-25",
+    "time": "15:17:14.331532",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195834.467638,
+    "date": "2024-01-25",
+    "time": "15:17:14.467638",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195836.491853,
+    "date": "2024-01-25",
+    "time": "15:17:16.491853",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195837.295374,
+    "date": "2024-01-25",
+    "time": "15:17:17.295374",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195837.639784,
+    "date": "2024-01-25",
+    "time": "15:17:17.639784",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195839.377583,
+    "date": "2024-01-25",
+    "time": "15:17:19.377583",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195840.067762,
+    "date": "2024-01-25",
+    "time": "15:17:20.067762",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195840.108137,
+    "date": "2024-01-25",
+    "time": "15:17:20.108137",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195843.827559,
+    "date": "2024-01-25",
+    "time": "15:17:23.827559",
+    "camera": 3,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195844.327718,
+    "date": "2024-01-25",
+    "time": "15:17:24.327718",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195844.873719,
+    "date": "2024-01-25",
+    "time": "15:17:24.873719",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195848.80741,
+    "date": "2024-01-25",
+    "time": "15:17:28.807410",
+    "camera": 1,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+},
+{
+    "timestamp": 1706195849.051579,
+    "date": "2024-01-25",
+    "time": "15:17:29.051579",
+    "camera": 2,
+    "route_id": "304A",
+    "bus_id": "081467",
+    "session_id": "2024-01-25_081467_304A",
+    "event": "enter",
+    "error": null,
+    "geolocation": {
+        "latitude": null,
+        "longitude": null
+    }
+}
