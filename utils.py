@@ -9,7 +9,7 @@ from debug_utils import (
     debug_processes_finish,
 )
 from detector import Detector
-from gps import GPS
+# from gps import GPS
 from iec_mgt_typing import StreamManager, Session, Log
 from logger import Logger
 from preprocessor import Preprocessor
@@ -60,11 +60,11 @@ def run_log(session: Session) -> None:
     return
 
 
-def run_gps(session: Session) -> None:
-    gps = GPS(session)
-    while True:
-        gps.run()
-    return
+# def run_gps(session: Session) -> None:
+#     gps = GPS(session)
+#     while True:
+#         gps.run()
+#     return
 
 
 def run_write(manager: StreamManager) -> None:
@@ -113,12 +113,12 @@ def _make_processes(session: Session) -> dict:
             args=(session,)
         )
     }
-    processes["gps"] = {
-        "gps": session.ctx.Process(
-            target=run_gps,
-            args=(session,)
-        )
-    }
+    # processes["gps"] = {
+    #     "gps": session.ctx.Process(
+    #         target=run_gps,
+    #         args=(session,)
+    #     )
+    # }
     debug_processes_init(processes)
     return processes
 

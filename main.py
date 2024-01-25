@@ -1,3 +1,4 @@
+import json
 import os
 
 from session import Session
@@ -7,23 +8,13 @@ from utils import run_session, set_environment
 if __name__ == "__main__":
 
     # Initialize paths
-    video_dir = "/home/gleb/projects/iec_dev/"
-    weights = "/home/gleb/projects/IEC-CV/model.pt"
-    logs_dir = "/home/gleb/projects/iec_dev/logs/tmp"
-    out_video_dir = "/home/gleb/projects/iec_dev/output/tmp"
-    stream1 = os.path.join(video_dir, "video/self/demo1.mp4")
-    stream2 = os.path.join(video_dir, "video/self/demo2.mp4")
-    stream3 = os.path.join(video_dir, "video/self/demo3.mp4")
+    config_path = "config.json"
 
-    # INitialize session parameters
-    bus_id = "081467"
-    route_id = "304A"
-    n_cameras = 3
-    streams = [
-        stream1,        
-        stream2,        
-        stream3,        
-    ]
+    # Read config file
+    with open(config_path, "r", encoding="utf-8") as config:
+        kwargs = json.load(config)
+    logs_dir = kwargs.pop("logs_dir", os.environ["TEMP"])
+    out_video_dir = kwargs.pop("out_video_dir", os.environ["TEMP"])
 
     # Set environment variables
     set_environment(
@@ -32,11 +23,5 @@ if __name__ == "__main__":
     )
 
     # Initialize and run the session
-    session = Session(
-        bus_id=bus_id,
-        route_id=route_id, 
-        n_cameras=n_cameras,
-        streams=streams,
-        weights=weights
-    )
+    session = Session(**kwargs)
     run_session(session)

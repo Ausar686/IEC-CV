@@ -12,36 +12,44 @@ from stream_manager import StreamManager
 
 class Session:
 
-    def __init__(
-        self,
-        *,
-        bus_id: str = None,
-        route_id: str = None,
-        n_cameras: int = 1,
-        streams: List[str] = None,
-        width: int = 640,
-        height: int = 640,
-        weights: str = None,
-        conf: float = 0.55,
-        detect_iou: float = 0.01,
-        min_detection_square: float = 0,
-        max_bbox_sides_relation: float = 2,
-        device: int|str = "cuda" if torch.cuda.is_available() else "cpu",
-        line_height: int = 160,
-        max_age: int = 120,
-        min_hits: int = 1,
-        tracker_iou: float = 0.02,
-        num_frames_to_average: int = 5,
-        min_frames_to_count: int = 500,
-        max_tracked_objects: int = 100,
-        patience: float = 30,
-        fourcc: str = "MP4V",
-        fps: float = 30,
-        stop_hour: int = 0,
-    ):
+    def __init__(self, **kwargs):
+        # Unpack arguments
+        bus_id = kwargs.get("bus_id", None)
+        route_id = kwargs.get("route_id", None)
+        n_cameras = kwargs.get("n_cameras", 1)
+        streams = kwargs.get("streams", [])
+        width = kwargs.get("width", 640)
+        height = kwargs.get("height", 640)
+        detect_weights = kwargs.get("detect_weights", None)
+        detect_conf = kwargs.get("detect_conf", 0.55)
+        detect_iou = kwargs.get("detect_iou", 0.01)
+        detect_half = kwargs.get("detect_half", True)
+        min_detection_square = kwargs.get("min_detection_square", 0)
+        max_bbox_sides_relation = kwargs.get("max_bbox_sides_relation", float("inf"))
+        device = kwargs.get("device", "cuda" if torch.cuda.is_available() else "cpu")
+        line_height = kwargs.get("line_height", 130)
+        tracker_max_age = kwargs.get("tracker_max_age", 60)
+        tracker_min_hits = kwargs.get("tracker_min_hits", 1)
+        tracker_iou = kwargs.get("tracker_iou", 0.02)
+        num_frames_to_average = kwargs.get("num_frames_to_average", 5)
+        min_frames_to_count = kwargs.get("min_frames_to_count", 500)
+        max_tracked_objects = kwargs.get("max_tracked_objects", 100)
+        patience = kwargs.get("patience", 30)
+        fourcc = kwargs.get("fourcc", "MP4V")
+        fps = kwargs.get("fps", 30)
+        stop_hour = kwargs.get("stop_hour", 0)
+        cls_weights = kwargs.get("cls_weights", None)
+        cls_threshold = kwargs.get("cls_threshold", 0.25)
+        cls_half = kwargs.get("cls_half", True)
+        cls_mode = kwargs.get("cls_mode", "torch")
+        cls_shape = kwargs.get("cls_shape", None)
+
         # Check for wrong input
-        if weights is None:
-            raise ValueError("Keyword argument 'weights' should be not None.")
+        if detect_weights is None or cls_weights is None:
+            raise ValueError(
+                "Keyword arguments 'detect_weights'and 'cls_weights' ",
+                "should be not None."
+            )
         if len(streams) != n_cameras:
             raise ValueError(f"Provided {len(streams)} streams for {n_cameras} cameras.")
 
@@ -70,21 +78,30 @@ class Session:
             width,
             height,
             device,
-            weights,
-            conf,
+            detect_weights,
+            detect_conf,
             detect_iou,
+            detect_half,
             min_detection_square,
             max_bbox_sides_relation,
             line_height,
-            max_age,
-            min_hits,
+            tracker_max_age,
+            tracker_min_hits,
             tracker_iou,
             num_frames_to_average,
             min_frames_to_count,
             max_tracked_objects,
             fourcc,
             fps,
+            cls_weights,
+            cls_threshold,
+            cls_half,
+            cls_mode,
+            cls_shape,
         )
+
+        print(n_cameras)
+        print(streams)
 
         # Initialize stream managers
         self.managers = [
