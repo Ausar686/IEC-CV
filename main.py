@@ -1,14 +1,14 @@
 import json
 import os
 
-from session import Session
+from managers import Session
 from utils import run_session, set_environment
 
 
 if __name__ == "__main__":
 
     # Initialize paths
-    config_path = "config.json"
+    config_path = "/home/gleb/projects/IEC-CV/config/main.json"
 
     # Read config file
     with open(config_path, "r", encoding="utf-8") as config:
