@@ -31,7 +31,7 @@ class VideoReader:
         debug_reader_init(self)
         return
 
-    def iterator_from_container(self, container) -> Iterable:
+    def iterator_from_container(self, container: av.container) -> Iterable:
         """
         Gets a Python iterator from av.container to simplify interface
         """
@@ -42,6 +42,7 @@ class VideoReader:
                 break
         if video_stream is None:
             return None
+        container.flags |= av.container.Flags.DISCARD_CORRUPT
         iterator = iter(container.decode(video=video_stream.index))
         return iterator
 
