@@ -162,6 +162,10 @@ def debug_gps_get_geolocation(gps: GPS, geolocation: dict) -> str:
     return f"Obtained geolocation: {geolocation}."
 
 @_debug_wrapper
+def debug_gps_fail_get_location(gps: GPS, e: Exception) -> str:
+    return f"Failed to obtain geolocation: {e}"
+
+@_debug_wrapper
 def debug_logger_init(logger: Logger) -> str:
     return "Logger initialized."
 

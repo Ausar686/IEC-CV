@@ -1,56 +1,92 @@
 import json
-import re
 import os
+import re
 import subprocess
 import time
-from typing import List
 
+import gpsd
 import requests
 
 from utils.debug import (
-    debug_gps_init,
+    debug_gps_fail_get_location,
     debug_gps_get_geolocation,
+    debug_gps_init,
 )
 from utils.types import Session
 
 
-class GPS(object):
+class GPS:
 
-    def __init__(self, session: Session):
+    def __init__(self, session: Session, socket: str='/etc/default/gpsd'):
+        # Store reference to session as an attribute
         self.session = session
+        # Set Yandex API attributes
         self.api_key = self.session.gps_api_key
         self.url = "http://api.lbs.yandex.net/geolocation"
         self.networks = []
+        # Set attributes for local GPS receiver
+        self.socket = socket
+        self.packet = None
+        # Set request cooldown
+        self.cooldown = 60
+        # Connect to GPS
+        os.environ["GPSD_SOCKET"] = self.socket
+        try:
+            gpsd.connect()
+            self._gpsd_connected = True
+        except Exception:
+            self._gpsd_connected = False
         debug_gps_init(self)
         return
 
     def get_location(self) -> None:
-        """
-        Get current device geolocation and store it into session.
-        
-        Don't forget to set 'SUDO_PASS' variable in /home/$USERNAME/.bashrc
-        Example:
-            export SUDO_PASS="1234"
-        """
-        iwlist_output = subprocess.check_output(
-            f"echo \"{os.environ.get('SUDO_PASS')}\" | sudo -S iwlist scan",
+        # Yandex API
+        try:
+            location = self._get_location_yandex()
+            if self._is_invalid(location):
+                raise ValueError("Error with Yandex or IP location received")
+        # Local GPS receiver
+        except Exception as e:
+            location = self._get_location_gps()
+            if self._is_invalid(location):
+                debug_gps_fail_get_location(self, e)
+                time.sleep(self.cooldown)
+                return
+        # Set GPS coordinates
+        self._set_location(location)
+        debug_gps_get_geolocation(self, location)
+        # Request cooldown
+        time.sleep(self.cooldown)
+        return
+
+    def _set_location(self, location: dict) -> None:
+        """Set geolocation to session and update timestamp."""
+        self.session.latitude.value = location.get("latitude")
+        self.session.longitude.value = location.get("longitude")
+        self.session.timestamp.value = time.time()
+        return
+
+    def _get_location_yandex(self) -> dict:
+        """Get current device geolocation store it into session."""
+        nmcli_output = subprocess.check_output(
+            "nmcli -f BSSID,SSID,SIGNAL dev wifi",
             encoding="utf-8",
             shell=True
         )
-        self.networks = self._parse_iwlist_output(iwlist_output)
-        geolocation = self._request_geolocation()
-        self.session.latitude.value = geolocation.get("latitude")
-        self.session.longitude.value = geolocation.get("longitude")
-        debug_gps_get_geolocation(self, geolocation)
-        time.sleep(60)
-        return
+        self.networks = self._parse_nmcli_output(nmcli_output)
+        location = self._request_geolocation()
+        return location
 
     def _request_geolocation(self) -> dict:
         """Request current geolocation based on networks"""
+        location = self._get_location_template()
         # Connection is lost
         if not self.networks:
-            return {"latitude": None, "longitude": None}
-        strongest_network = max(self.networks, key=lambda x: x["signal_strength"])
+            return location
+        strongest_network = max(
+            self.networks,
+            key=lambda x: x["signal_strength"]
+        )
         data = {
             "common": {
                 "version": "1.0",
@@ -63,31 +99,60 @@ class GPS(object):
         response = requests.post(self.url, data=payload)
         try:
             geolocation = response.json()
-        except Exception:
-            geolocation = {}
-        latitude = geolocation.get("position", {}).get("latitude", None)
-        longitude = geolocation.get("position", {}).get("longitude", None)
-        return {"latitude": latitude, "longitude": longitude}
+        except Exception as e:
+            geolocation = {"error": f"{e}"}
+        position = geolocation.get("position", {})
+        # Return error, if location is determined, based on IP
+        if position.get("type") == "ip":
+            location["error"] = "IP, not WiFi"
+            return location
+        # Otherwise process normally
+        location["latitude"] = position.get("latitude")
+        location["longitude"] = position.get("longitude")
+        location["error"] = geolocation.get("error")
+        return location
 
-    def _parse_iwlist_output(self, output: str) -> List[dict]:
-        """Return WiFi networks obtained from iwlist command."""
-        cell_re = re.compile(r'Cell \d+ - Address: (\S+)')
-        signal_re = re.compile(r'Signal level=(-?\d+)')
+    def _parse_nmcli_output(self, output: str) -> list:
+        """Get Wifi networks by parsing nmcli output."""
         wifi_networks = []
+        # Compile regular expression to search for required string parts
+        line_re = re.compile(r'(^[\w:]+)\s+([\S ]+)\s+(\d+)$')
+        
         for line in output.split('\n'):
-            cell_match = cell_re.search(line)
-            signal_match = signal_re.search(line)
-            if cell_match:
-                # Get lowercase MAC-address
-                mac_address = cell_match.group(1) 
-            if signal_match:
-                signal_strength = int(signal_match.group(1))
-                wifi_network = {
-                    "mac": mac_address,
-                    "signal_strength": signal_strength
-                }
+            match = line_re.search(line.strip())
+            if match:
+                mac_address, ssid, signal_strength = match.groups()
+                wifi_network = {"mac": mac_address, "signal_strength": int(signal_strength)}
                 wifi_networks.append(wifi_network)
+
         return wifi_networks 
+
+    def _get_location_gps(self) -> dict:
+        """Get location from local GPS receiver."""
+        location = self._get_location_template()
+        if not self._gpsd_connected:
+            try:
+                gpsd.connect()
+                self._gpsd_connected = True
+            except Exception:
+                return location
+        self.packet = gpsd.get_current()
+        if self.packet.mode >= 2 and self.packet.lat != 'n/a' and self.packet.lon != 'n/a':
+            location["latitude"] = self.packet.lat
+            location["longitude"] = self.packet.lon
+        return location
+
+    def _get_location_template(self) -> dict:
+        """Return default location template."""
+        return {"latitude": None, "longitude": None, "error": None}
+
+    def _is_invalid(self, location: dict) -> bool:
+        """Check whether obtained location is invalid or not."""
+        return (
+            location.get("error") is not None
+            or location.get("latitude") is None
+            or location.get("longitude") is None
+        )
 
     def run(self, *args, **kwargs) -> None:
         return self.get_location(*args, **kwargs)
