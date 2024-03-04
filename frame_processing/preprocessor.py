@@ -39,6 +39,8 @@ class Preprocessor:
 
         # Get the frame for preprocessing
         frame = self.manager.read_storage.get()
+        if frame is None:
+            return
 
         # Preprocess the frame (classification)
         # Crop parts of the image, which contain the door 

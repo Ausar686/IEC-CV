@@ -96,7 +96,7 @@ class GPS:
         }
         json_str = json.dumps(data)
         payload = {"json": json_str}
-        response = requests.post(self.url, data=payload)
+        response = requests.post(self.url, data=payload, timeout=5)
         try:
             geolocation = response.json()
         except Exception as e:

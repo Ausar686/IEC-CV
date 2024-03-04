@@ -1,3 +1,5 @@
+import time
+
 from utils.debug import debug_manager_init
 from utils.types import Session
 
@@ -16,6 +18,7 @@ class StreamManager:
         # Initalize manager information
         self.camera = camera
         self.ctx = self.session.ctx
+        self.patience = 3
 
         # Unpack the stream data
         (
@@ -86,6 +89,7 @@ class StreamManager:
 
         # Initialize storages
         self.read_storage = self.ctx.Queue()
+        self.read_timestamp = self.ctx.Value("d", time.time())
         self.preprocess_storage = self.ctx.Queue()
         self.preprocess_door_storage = self.ctx.Queue()
         self.detect_storage = self.ctx.Queue()
@@ -96,3 +100,7 @@ class StreamManager:
         # Print debug info
         debug_manager_init(self)
         return
+
+    def validate_reader(self) -> bool:
+        """Validate VideoReader activity status."""
+        return time.time() - self.read_timestamp.value < self.patience
