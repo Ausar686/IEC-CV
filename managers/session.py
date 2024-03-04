@@ -34,7 +34,7 @@ class Session:
         num_frames_to_average = kwargs.get("num_frames_to_average", 5)
         min_frames_to_count = kwargs.get("min_frames_to_count", 500)
         max_tracked_objects = kwargs.get("max_tracked_objects", 100)
-        patience = kwargs.get("patience", 30)
+        patience = kwargs.get("patience", 120)
         fourcc = kwargs.get("fourcc", "MP4V")
         fps = kwargs.get("fps", 30)
         stop_hour = kwargs.get("stop_hour", 0)
@@ -43,6 +43,7 @@ class Session:
         cls_half = kwargs.get("cls_half", True)
         cls_mode = kwargs.get("cls_mode", "torch")
         cls_shape = kwargs.get("cls_shape", None)
+        gps_api_key = kwargs.get("gps_api_key", os.environ.get("GPS_API_KEY"))
 
         # Check for wrong input
         if detect_weights is None or cls_weights is None:
@@ -60,6 +61,9 @@ class Session:
 
         # Initialize parameters for time management
         self.stop_hour = stop_hour
+        
+        # Initialize GPS parameters
+        self.gps_api_key = gps_api_key
 
         # Initialize logging path for this session
         self.event_log_path = self.make_event_log_path()
@@ -68,7 +72,7 @@ class Session:
         self.ctx = mp.get_context("spawn")
         self.latitude = self.ctx.Value("d", 0)
         self.longitude = self.ctx.Value("d", 0)
-        self.timestamp = self.ctx.Value("d", 0)
+        self.timestamp = self.ctx.Value("d", time.time())
 
         # Initialize geolocation abscence patience
         self.patience = patience
@@ -99,9 +103,6 @@ class Session:
             cls_mode,
             cls_shape,
         )
-
-        print(n_cameras)
-        print(streams)
 
         # Initialize stream managers
         self.managers = [
