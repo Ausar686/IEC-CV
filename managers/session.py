@@ -61,7 +61,7 @@ class Session:
 
         # Initialize parameters for time management
         self.stop_hour = stop_hour
-
+        
         # Initialize GPS parameters
         self.gps_api_key = gps_api_key
 
