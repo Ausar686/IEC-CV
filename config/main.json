@@ -9,7 +9,7 @@
 	],
 	"width": 640,
 	"height": 640,
-	"detect_weights": "/home/gleb/projects/IEC-CV/models/detect_model_2024-02-24.pt",
+	"detect_weights": "/home/gleb/projects/IEC-CV/models/detect_model_2024-02-24s.pt",
 	"detect_conf": 0.55,
 	"detect_iou": 0.01,
 	"detect_half": true,
