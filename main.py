@@ -8,7 +8,7 @@ from utils import run_session, set_environment
 if __name__ == "__main__":
 
     # Initialize paths
-    config_path = "/home/gleb/projects/IEC-CV/config/main.json"
+    config_path = os.environ.get("IEC_CONFIG")
 
     # Read config file
     with open(config_path, "r", encoding="utf-8") as config:

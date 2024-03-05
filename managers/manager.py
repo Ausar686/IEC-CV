@@ -18,7 +18,7 @@ class StreamManager:
         # Initalize manager information
         self.camera = camera
         self.ctx = self.session.ctx
-        self.patience = 3
+        self.patience = 10
 
         # Unpack the stream data
         (
