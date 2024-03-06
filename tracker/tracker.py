@@ -5,10 +5,8 @@ from loggers import Log, create_log
 from utils.debug import (
     debug_tracker_init,
     debug_track_empty,
-    debug_track_exit,
-    debug_fail_track_exit,
-    debug_track_enter,
-    debug_fail_track_enter,
+    debug_track_event,
+    debug_fail_track_event,
 )
 from utils.types import StreamManager
 from .sort import Sort
@@ -139,74 +137,123 @@ class Tracker:
 
         # Person is entering the bus 
         if avg_y < self.line_height and cy > self.line_height:
-            self.process_enter_event(obj_id)
+            self.process_enter_event(obj_id, event_type="s")
 
         # Person is exiting the bus
         elif avg_y > self.line_height and cy < self.line_height:
-            self.process_exit_event(obj_id)
+            self.process_exit_event(obj_id, event_type="s")
 
         # Person has been standing next to the door and is exiting now
         elif avg_low_y > self.line_height_low and y2 < self.line_height_low:
-            self.process_exit_event(obj_id)
+            self.process_exit_event(obj_id, event_type="w")
 
         # Person has entered too fast, and detector failed
         # to recognize him quickly
         elif avg_high_y < self.line_height_high and y1 > self.line_height_high:
-            self.process_enter_event(obj_id)
+            self.process_enter_event(obj_id, event_type="w")
         return
 
-    def process_enter_event(self, obj_id: int) -> None:
+    def process_enter_event(self, obj_id: int, event_type: str) -> None:
         obj_dir_data = self.last_direction.get(obj_id) 
-        # Check for enter conditions
-        if (
-            obj_dir_data is None 
-            or (
-                obj_dir_data[0] == "up" 
+        # Strong enter
+        if event_type == "s":
+            if obj_dir_data is None:
+                self.register_event(obj_id, "enter", event_type)
+            elif obj_dir_data[0] == "exit_w":
+                if self.frame_counter - obj_dir_data[1] < self.min_frames_to_count:
+                    self.deregister_event(obj_id, "exit")
+                self.register_event(obj_id, "enter", event_type)
+            elif obj_dir_data[0] == "enter_w":
+                self.last_direction[obj_id][0] = "enter_s"
+            elif (
+                obj_dir_data[0] == "exit_s"
                 and self.frame_counter - obj_dir_data[1] >= self.min_frames_to_count
-            )
-        ):
-            # Increment counter and write logs
+            ):
+                self.register_event(obj_id, "enter", event_type)
+        # Weak enter
+        elif event_type == "w":
+            if obj_dir_data is None:
+                self.register_event(obj_id, "enter", event_type)
+            elif obj_dir_data[0] == "exit_w":
+                if self.frame_counter - obj_dir_data[1] < self.min_frames_to_count:
+                    self.deregister_event(obj_id, "exit")
+                self.register_event(obj_id, "enter", event_type)
+            elif (
+                obj_dir_data[0] == "exit_s"
+                and self.frame_counter - obj_dir_data[1] >= self.min_frames_to_count
+            ):
+                self.register_event(obj_id, "enter", event_type)
+        return
+
+    def process_exit_event(self, obj_id: int, event_type: str) -> None:
+        obj_dir_data = self.last_direction.get(obj_id)
+        # Strong exit
+        if event_type == "s":
+            if obj_dir_data is None:
+                self.register_event(obj_id, "exit", event_type)
+            elif obj_dir_data[0] == "enter_w":
+                if self.frame_counter - obj_dir_data[1] < self.min_frames_to_count:
+                    self.deregister_event(obj_id, "enter")
+                self.register_event(obj_id, "exit", event_type)
+            elif obj_dir_data[0] == "exit_w":
+                self.last_direction[obj_id][0] = "exit_s"
+            elif (
+                obj_dir_data[0] == "enter_s"
+                and self.frame_counter - obj_dir_data[1] >= self.min_frames_to_count
+            ):
+                self.register_event(obj_id, "exit", event_type)
+        # Weak exit
+        elif event_type == "w":
+            if obj_dir_data is None:
+                self.register_event(obj_id, "exit", event_type)
+            elif obj_dir_data[0] == "enter_w":
+                if self.frame_counter - obj_dir_data[1] < self.min_frames_to_count:
+                    self.deregister_event(obj_id, "enter")
+                self.register_event(obj_id, "exit", event_type)
+            elif (
+                obj_dir_data[0] == "enter_s"
+                and self.frame_counter - obj_dir_data[1] >= self.min_frames_to_count
+            ):
+                self.register_event(obj_id, "exit", event_type)
+        return
+
+    def register_event(self, obj_id: int, event_name: str, event_type: str) -> None:
+        if event_name == "enter":
             self.manager.count_in.value += 1
-            self.last_direction[obj_id] = ("down", self.frame_counter)
-            # Put data into a shared storage (or report about issue)
+        elif event_name == "exit":
+            self.manager.count_out.value += 1
+        status = f"{event_name}_{event_type}"
+        self.last_direction[obj_id] = [status, self.frame_counter]
+        try:
+            log = create_log(self.manager, event_name)
+            self.manager.logs_storage.put(log)
+            debug_track_event(self, event_name)
+        except Exception as e:
+            debug_fail_track_event(self, event_name, e)
+            log = create_log(self.manager, "tracker_put_error", e)
             try:
-                log = create_log(self.manager, "enter")
                 self.manager.logs_storage.put(log)
-                debug_track_enter(self)
-            except Exception as e:
-                debug_fail_track_enter(self, e)
-                log = create_log(self.manager, "tracker_put_error", e)
-                try:
-                    self.manager.logs_storage.put(log)
-                except Exception:
-                    pass
+            except Exception:
+                pass
         return
 
-    def process_exit_event(self, obj_id: int) -> None:
-        obj_dir_data = self.last_direction.get(obj_id) 
-        # Check for exit conditions
-        if (
-            obj_dir_data is None 
-            or (
-                obj_dir_data[0] == "down" 
-                and self.frame_counter - obj_dir_data[1] >= self.min_frames_to_count
-            )
-        ):
-            # Increment counter and write logs
-            self.manager.count_out.value += 1
-            self.last_direction[obj_id] = ("up", self.frame_counter)
-            # Put data into a shared storage (or report about issue)
+    def deregister_event(self, obj_id: int, event_name: str) -> None:
+        if event_name == "enter":
+            self.manager.count_in.value = max(0, self.manager.count_in.value-1)
+        elif event_name == "exit":
+            self.manager.count_out.value = max(0, self.manager.count_out.value-1)
+        status = f"cancel_{event_name}"
+        try:
+            log = create_log(self.manager, status)
+            self.manager.logs_storage.put(log)
+            debug_track_event(self, event_name)
+        except Exception as e:
+            debug_fail_track_event(self, event_name, e)
+            log = create_log(self.manager, "tracker_put_error", e)
             try:
-                log = create_log(self.manager, "exit")
                 self.manager.logs_storage.put(log)
-                debug_track_exit(self)
-            except Exception as e:
-                debug_fail_track_exit(self, e)
-                log = create_log(self.manager, "tracker_put_error", e)
-                try:
-                    self.manager.logs_storage.put(log)
-                except Exception:
-                    pass
+            except Exception:
+                pass
         return
 
     def check_storages(self) -> None:

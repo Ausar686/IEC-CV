@@ -138,20 +138,28 @@ def debug_track_empty(tracker: Tracker) -> str:
     return f"Tracking storage for CAM{tracker.manager.camera} is empty. Waiting..."
 
 @_debug_wrapper
-def debug_track_enter(tracker: Tracker) -> str:
-    return f"Tracked enter event from CAM{tracker.manager.camera}"
-
-@_debug_fail_wrapper
-def debug_fail_track_enter(tracker: Tracker, e: Exception) -> str:
-    return f"Failed to put enter event from CAM{tracker.manager.camera}"
+def debug_track_event(tracker: Tracker, event_name: str) -> str:
+    return f"Tracked {event_name} event from CAM{tracker.manager.camera}"
 
 @_debug_wrapper
-def debug_track_exit(tracker: Tracker) -> str:
-    return f"Tracked exit event from CAM{tracker.manager.camera}"
+def debug_fail_track_event(tracker: Tracker, event_name: str, e: Exception) -> str:
+    return f"Failed to put tracker event '{event_name}' from CAM{tracker.manager.camera} due to: {e}"
 
-@_debug_fail_wrapper
-def debug_fail_track_exit(tracker: Tracker, e: Exception) -> str:
-    return f"Failed to put exit event from CAM{tracker.manager.camera}"
+# @_debug_wrapper
+# def debug_track_enter(tracker: Tracker) -> str:
+#     return f"Tracked enter event from CAM{tracker.manager.camera}"
+
+# @_debug_fail_wrapper
+# def debug_fail_track_enter(tracker: Tracker, e: Exception) -> str:
+#     return f"Failed to put enter event from CAM{tracker.manager.camera}"
+
+# @_debug_wrapper
+# def debug_track_exit(tracker: Tracker) -> str:
+#     return f"Tracked exit event from CAM{tracker.manager.camera}"
+
+# @_debug_fail_wrapper
+# def debug_fail_track_exit(tracker: Tracker, e: Exception) -> str:
+#     return f"Failed to put exit event from CAM{tracker.manager.camera}"
 
 @_debug_wrapper
 def debug_gps_init(gps: GPS) -> str:

@@ -136,7 +136,10 @@ class GPS:
                 self._gpsd_connected = True
             except Exception:
                 return location
-        self.packet = gpsd.get_current()
+        try:
+            self.packet = gpsd.get_current()
+        except Exception:
+            return location
         if self.packet.mode >= 2 and self.packet.lat != 'n/a' and self.packet.lon != 'n/a':
             location["latitude"] = self.packet.lat
             location["longitude"] = self.packet.lon
