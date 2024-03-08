@@ -29,7 +29,8 @@ class VideoWriter:
             "XVID": ".avi",
             "MJPG": ".avi",
             "MP4V": ".mp4",
-            "X264": ".mp4"
+            "X264": ".mp4",
+            "mp4v": ".mp4",
         }
 
         # Set required attributes
