@@ -60,13 +60,13 @@ class VideoReader:
             raise
 
     def _read(self) -> None:
-        # If shared storage is not empty, simply wait
-        if not self.manager.read_storage.empty():
-            time.sleep(0.01)
-            return
-
         # Get next frame
         frame = self.get_frame()
+
+        # If shared storage is not empty, simply wait
+        if not self.manager.read_storage.empty():
+            time.sleep(0.001)
+            return
 
         # Put the frame into shared storage (or report an issue)
         try:

@@ -22,7 +22,7 @@
 	"min_frames_to_count": 500,
 	"max_tracked_objects": 100,
 	"patience": 30,
-	"fourcc": "MP4V",
+	"fourcc": "mp4v",
 	"fps": 30,
 	"stop_hour": 0,
 	"cls_weights": "/home/gleb/projects/IEC-CV/models/cls_model_2024-02-28s.pt",
