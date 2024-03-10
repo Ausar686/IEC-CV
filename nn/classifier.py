@@ -1,9 +1,9 @@
 import time
 
+from ultralytics import YOLO
 import cv2
 import numpy as np
 import torch
-from ultralytics import YOLO
 
 from loggers import Log, create_log
 from utils.debug import (

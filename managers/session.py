@@ -1,13 +1,13 @@
 from datetime import datetime
+from typing import List, Tuple
 import multiprocessing as mp
 import os
 import time
-from typing import List, Tuple
 
 import torch
 
+from managers.manager import StreamManager
 from utils.debug import debug_session_init
-from .manager import StreamManager
 
 
 class Session:

@@ -2,14 +2,14 @@ from collections import deque
 import time
 
 from loggers import Log, create_log
+from tracker.sort import Sort
 from utils.debug import (
+    debug_fail_track_event,
     debug_tracker_init,
     debug_track_empty,
     debug_track_event,
-    debug_fail_track_event,
 )
 from utils.types import StreamManager
-from .sort import Sort
 
 
 class Tracker:
