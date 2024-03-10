@@ -1,7 +1,6 @@
 import time
 from typing import Iterable
 
-# import av
 import cv2
 import numpy as np
 
@@ -26,27 +25,10 @@ class VideoReader:
         # Set required attributes
         self.type = "reader"
         self.cap = cv2.VideoCapture(stream)
-        # self.container = av.open(stream)
-        # self.iterator = self.iterator_from_container(self.container)
 
         # Print debug info
         debug_reader_init(self)
         return
-
-    # def iterator_from_container(self, container: av.container) -> Iterable:
-    #     """
-    #     Gets a Python iterator from av.container to simplify interface
-    #     """
-    #     video_stream = None
-    #     for stream in container.streams:
-    #         if stream.type == 'video':
-    #             video_stream = stream
-    #             break
-    #     if video_stream is None:
-    #         return None
-    #     container.flags |= av.container.Flags.DISCARD_CORRUPT
-    #     iterator = iter(container.decode(video=video_stream.index))
-    #     return iterator
 
     def read(self) -> None:
         """
@@ -63,10 +45,13 @@ class VideoReader:
         # Get next frame
         frame = self.get_frame()
 
-        # If shared storage is not empty, simply wait
-        if not self.manager.read_storage.empty():
-            time.sleep(0.001)
-            return
+        # # If shared storage is not empty, simply wait
+        # # Add this only if your model is very slow.
+        # # Note, that OpenCV and RTSP are trciky in terms of time and sync.
+        # # So, sleeping even for 1ms can lead to frame corruption/crashes.
+        # if not self.manager.read_storage.empty():
+        #     time.sleep(0.001)
+        #     return
 
         # Put the frame into shared storage (or report an issue)
         try:
@@ -83,16 +68,11 @@ class VideoReader:
         return
 
     def get_frame(self) -> np.ndarray:
-        # # Read next frame in raw format
-        # raw_frame = next(self.iterator).reformat(format="bgr24")
-        # # Convert frame to np.ndarray
-        # frame = raw_frame.to_ndarray()
         ret, frame = self.cap.read()
         return frame
 
     def close(self) -> None:
-        # # Release all reader resources
-        # self.container.close()
+        # Release all reader resources
         self.cap.release()
         return
 
