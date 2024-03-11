@@ -30,7 +30,6 @@ class Preprocessor:
         debug_preprocessor_init(self)
         return
 
-
     def preprocess(self) -> None:
         # If there are no frames to preprocess, simply wait
         if self.manager.read_storage.empty():
@@ -69,10 +68,8 @@ class Preprocessor:
                 pass
         return
 
-
     def run(self, *args, **kwargs) -> None:
         return self.preprocess(*args, **kwargs)
-
 
     def __call__(self, *args, **kwargs) -> None:
         return self.preprocess(*args, **kwargs)

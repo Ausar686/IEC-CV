@@ -2,6 +2,7 @@ from datetime import datetime
 import os
 import sys
 import time
+import uuid
 
 import cv2
 
@@ -81,6 +82,9 @@ class VideoWriter:
         # The 'out_video_dir' environment variable contains
         # the abspath to directory with output videos.
         directory = os.environ.get("out_video_dir", "/tmp")
+        # If file already exists, change the name
+        if filename in os.listdir(directory):
+            filename = f"video_{now.date()}_hour{self._start_hour}_cam{self.manager.camera}_{uuid.uuid4()}{self.ext}"
         out_path = os.path.join(directory, filename)
         return out_path
 

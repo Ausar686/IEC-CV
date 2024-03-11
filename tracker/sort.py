@@ -17,8 +17,8 @@
 """
 import os
 
-import numpy as np
 from filterpy.kalman import KalmanFilter
+import numpy as np
 
 np.random.seed(0)
 

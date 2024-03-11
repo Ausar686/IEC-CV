@@ -13,11 +13,11 @@ from loggers import Logger
 from nn import Classifier, Detector
 from tracker import Tracker
 from utils.debug import (
+    debug_processes_finish,
     debug_processes_init,
     debug_processes_start,
-    debug_processes_finish,
 )
-from utils.types import StreamManager, Session, Log
+from utils.types import Log, Session, StreamManager
 
 
 def set_environment(**kwargs) -> None:
