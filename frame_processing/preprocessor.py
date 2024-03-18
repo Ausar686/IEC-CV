@@ -55,8 +55,12 @@ class Preprocessor:
 
         # Put preprocessed frames into shared storages (or report an issue)
         try:
-            self.manager.preprocess_storage.put(detect_frame)
-            self.manager.preprocess_door_storage.put(cls_frame)
+            if (
+                self.manager.preprocess_storage.empty()
+                and self.manager.preprocess_door_storage.empty()
+            ):
+                self.manager.preprocess_storage.put(detect_frame)
+                self.manager.preprocess_door_storage.put(cls_frame)
             self.manager.write_storage.put(detect_frame)
             debug_preprocess_frame(self)
         except Exception as e:

@@ -5,6 +5,7 @@ import time
 import uuid
 
 import cv2
+import numpy as np
 
 from loggers import create_log
 from utils.debug import (
@@ -84,7 +85,7 @@ class VideoWriter:
         directory = os.environ.get("out_video_dir", "/tmp")
         # If file already exists, change the name
         if filename in os.listdir(directory):
-            filename = f"video_{now.date()}_hour{self._start_hour}_cam{self.manager.camera}_{uuid.uuid4()}{self.ext}"
+            filename = f"video_{now.date()}_hour{self._start_hour:02d}_cam{self.manager.camera}_{uuid.uuid4()}{self.ext}"
         out_path = os.path.join(directory, filename)
         return out_path
 
@@ -113,6 +114,9 @@ class VideoWriter:
         # Get next frame
         frame = self.manager.write_storage.get()
 
+        # Write datetime on a frame
+        self._write_datetime(frame)
+
         # Write the frame
         try:
             self.writer.write(frame)
@@ -124,6 +128,35 @@ class VideoWriter:
                 self.manager.logs_storage.put(log)
             except Exception:
                 pass
+        return
+
+    def _write_datetime(self, frame: np.ndarray) -> None:
+        """Write current datetime in top-right corner of the frame."""
+        # Obtain current datetime
+        now = datetime.now()
+        date_time_str = now.strftime('%Y-%m-%d %H:%M:%S')
+
+        # Get text parameters
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        text_size = 0.7
+        text_color = (255, 255, 255)  # White
+        thickness = 2
+        text_y = frame.shape[1] // 20
+
+        # Calculate text x coordinate
+        (text_width, text_height), _ = cv2.getTextSize(date_time_str, font, text_size, thickness)
+        text_x = frame.shape[1] - text_width - 10  # Top-right corner
+
+        # Put text on a frame
+        cv2.putText(
+            frame,
+            date_time_str,
+            (text_x, text_y),
+            font,
+            text_size,
+            text_color,
+            thickness
+        )
         return
 
     def _is_valid(self) -> bool:
